@@ -1,0 +1,7 @@
+*.log
+*.o
+*.a
+.DS_Store
+build/
+dist/
+tmp/
