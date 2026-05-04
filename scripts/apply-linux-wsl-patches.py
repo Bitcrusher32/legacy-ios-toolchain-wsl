@@ -40,8 +40,9 @@ def main() -> None:
     macho_cpp = LD64 / "src/ld/parsers/macho_relocatable_file.cpp"
     macosx_deploy_c = ROOT / "build/cctools/cctools/libstuff/macosx_deployment_target.c"
 
-    for path in [input_files, input_header, ld_cpp, resolver_h]:
-        remove_exact(path, "#include <sys/sysctl.h>\n", "remove sys/sysctl.h")
+    for path in LD64.rglob("*"):
+        if path.is_file() and path.suffix in {".c", ".cc", ".cpp", ".h", ".hpp"}:
+            remove_exact(path, "#include <sys/sysctl.h>\n", "remove ld64 sys/sysctl.h")
 
     remove_exact(macosx_deploy_c, "#include <sys/sysctl.h>\n", "macosx_deployment_target.c remove sys/sysctl.h")
 
