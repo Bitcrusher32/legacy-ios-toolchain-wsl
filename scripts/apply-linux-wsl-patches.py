@@ -45,53 +45,36 @@ def main() -> None:
 
     remove_exact(macosx_deploy_c, "#include <sys/sysctl.h>\n", "macosx_deployment_target.c remove sys/sysctl.h")
 
-    replace_exact(
-        macosx_deploy_c,
-"""        /*
-         * The default value is the version of the running OS.
-         */
-        osversion_name[0] = CTL_KERN;
-        osversion_name[1] = KERN_OSRELEASE;
-        osversion_len = sizeof(osversion) - 1;
-        if(sysctl(osversion_name, 2, osversion, &osversion_len, NULL, 0) == -1)
-            system_error("sysctl for kern.osversion failed");
+    text = macosx_deploy_c.read_text()
+    if "Linux/WSL fallback: this cross-build cannot query Darwin" in text:
+        print(f"[already patched] macosx_deployment_target.c default fallback: {macosx_deploy_c}")
+    else:
+        pattern = re.compile(
+            r"""(?ms)^use_default:\n"""
+            r""".*?"""
+            r"""^\tvalue->name = allocate\(32\);\n"""
+            r"""^\tsprintf\(value->name, "10\.%u\.%u", major, minor\);\n"""
+            r"""^\tgoto warn_if_bad_user_values;\n"""
+        )
 
-        /*
-         * Now parse this out.  It is expected to be of the form "x.y.z" where
-         * x, y and z are unsigned numbers.  Where x-4 is the Mac OS X major
-         * version number, and y is the minor version number.  We don't parse
-         * out the value of z.
-         */
-        major = strtoul(osversion, &endp, 10);
-        if(*endp != '.')
-            goto bad_system_value;
-        if(major <= 4)
-            goto bad_system_value;
-        major = major - 4;
-        q = endp + 1;
-        minor = strtoul(q, &endp, 10);
-        if(*endp != '.')
-            goto bad_system_value;
+        replacement = """use_default:
+	/*
+	 * Linux/WSL fallback: this cross-build cannot query Darwin's
+	 * kern.osrelease via sysctl, so use a deterministic Mac OS X 10.8
+	 * default matching the ld64 SDK fallback used elsewhere.
+	 */
+	value->major = 8;
+	value->minor = 0;
+	value->name = allocate(strlen("10.8") + 1);
+	strcpy(value->name, "10.8");
+	goto warn_if_bad_user_values;
+"""
 
-        value->major = major;
-        value->minor = minor;
-        value->name = allocate(32);
-        sprintf(value->name, "10.%" PRIu32 ".%" PRIu32, major, minor);
-        return;
-""",
-"""        /*
-         * Linux/WSL fallback: this cross-build cannot query Darwin's
-         * kern.osrelease via sysctl, so use a deterministic Mac OS X 10.8
-         * default matching the ld64 SDK fallback used elsewhere.
-         */
-        value->major = 8;
-        value->minor = 0;
-        value->name = allocate(5);
-        strcpy(value->name, "10.8");
-        return;
-""",
-        "macosx_deployment_target.c default fallback",
-    )
+        text2, count = pattern.subn(replacement, text, count=1)
+        if count != 1:
+            raise SystemExit(f"[missing pattern] macosx_deployment_target.c default fallback: {macosx_deploy_c}")
+        macosx_deploy_c.write_text(text2)
+        print(f"[patched] macosx_deployment_target.c default fallback: {macosx_deploy_c}")
 
     text = input_files.read_text()
     if "_SC_NPROCESSORS_ONLN" in text:
