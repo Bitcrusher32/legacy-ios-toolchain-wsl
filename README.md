@@ -59,3 +59,28 @@ Current automation level:
 Important: patch application is not automated yet.
 
 Before a fresh build succeeds, the source fixes described in PATCHES.md still need to be applied manually or converted into patch files under `patches/`.
+
+## Reproducible build validation
+
+Fresh reproducible build/install has been validated using a throwaway WSL workdir.
+
+Validated flow:
+- clone this repo
+- clone Tidal-Loop/linux-ios-toolchain through build-toolchain.sh
+- initialize submodules
+- apply Linux/WSL compatibility patcher
+- run ./configure arm-apple-darwin
+- build cctools + ios tools
+- install to /usr/bin
+- run ARMv7 Mach-O smoke verification
+
+Validated smoke outputs:
+- test.o: Mach-O armv7 object
+- test_reloc.o: Mach-O armv7 object
+- libtest.a: current ar archive random library
+
+Known remaining scope:
+- full iOS executable linking is not validated
+- Theos tweak build is not validated
+- .deb packaging is not validated
+- device install/uninstall is not validated
