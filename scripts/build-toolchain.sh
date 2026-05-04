@@ -6,7 +6,7 @@ WORKDIR="${HOME}/linux-ios-toolchain"
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO_ROOT="$(cd "${SCRIPT_DIR}/.." && pwd)"
 
-echo "[1/4] Cloning base toolchain if needed..."
+echo "[1/5] Cloning base toolchain if needed..."
 if [ ! -d "$WORKDIR/.git" ]; then
   git clone "$REPO_URL" "$WORKDIR"
 else
@@ -15,16 +15,16 @@ fi
 
 cd "$WORKDIR"
 
-echo "[2/4] Applying patches..."
-for patch_file in "${REPO_ROOT}"/patches/*.patch; do
-  echo "Applying ${patch_file}"
-  patch -p1 < "$patch_file"
-done
+echo "[2/4] Initializing submodules..."
+git submodule update --init --recursive
 
-echo "[3/4] Building..."
+echo "[3/4] Applying Linux/WSL patches..."
+"${REPO_ROOT}/scripts/apply-linux-wsl-patches.py" "$WORKDIR"
+
+echo "[4/5] Building..."
 CFLAGS="-fcommon" CXXFLAGS="-fcommon" make 2>&1 | tee build.log
 
-echo "[4/4] Installing..."
+echo "[5/5] Installing..."
 sudo make install 2>&1 | tee install-sudo.log
 
 echo "Build/install complete. Run verify-toolchain.sh from this repo next."
