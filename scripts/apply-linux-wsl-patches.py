@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 from pathlib import Path
 import sys
+import re
 
 if len(sys.argv) != 2:
     raise SystemExit("usage: apply-linux-wsl-patches.py /path/to/linux-ios-toolchain")
@@ -41,22 +42,29 @@ def main() -> None:
     for path in [input_files, input_header, ld_cpp, resolver_h]:
         remove_exact(path, "#include <sys/sysctl.h>\n", "remove sys/sysctl.h")
 
-    replace_exact(
-        input_files,
-"""		unsigned int ncpus;
-		int mib[2];
-		size_t len = sizeof(ncpus);
-		mib[0] = CTL_HW;
-		mib[1] = HW_NCPU;
-		if (sysctl(mib, 2, &ncpus, &len, NULL, 0) != 0) {
-			ncpus = 1;
-		}
-""",
-"""		long cpuCount = sysconf(_SC_NPROCESSORS_ONLN);
-		unsigned int ncpus = (cpuCount > 0) ? (unsigned int)cpuCount : 1;
-""",
-        "InputFiles.cpp sysconf CPU count",
-    )
+    text = input_files.read_text()
+    if "_SC_NPROCESSORS_ONLN" in text:
+        print(f"[already patched] InputFiles.cpp sysconf CPU count: {input_files}")
+    else:
+        pattern = re.compile(
+            r"""(?m)^[ \\t]*unsigned int ncpus;\n"""
+            r"""^[ \\t]*int mib\[2\];\n"""
+            r"""^[ \\t]*size_t len = sizeof\(ncpus\);\n"""
+            r"""^[ \\t]*mib\[0\] = CTL_HW;\n"""
+            r"""^[ \\t]*mib\[1\] = HW_NCPU;\n"""
+            r"""^[ \\t]*if \(sysctl\(mib, 2, &ncpus, &len, NULL, 0\) != 0\) \{\n"""
+            r"""^[ \\t]*ncpus = 1;\n"""
+            r"""^[ \\t]*\}\n"""
+        )
+        replacement = (
+            "        long cpuCount = sysconf(_SC_NPROCESSORS_ONLN);\n"
+            "        unsigned int ncpus = (cpuCount > 0) ? (unsigned int)cpuCount : 1;\n"
+        )
+        text2, count = pattern.subn(replacement, text)
+        if count != 1:
+            raise SystemExit(f"[missing pattern] InputFiles.cpp sysconf CPU count: {input_files}")
+        input_files.write_text(text2)
+        print(f"[patched] InputFiles.cpp sysconf CPU count: {input_files}")
 
     replace_exact(
         options_cpp,
