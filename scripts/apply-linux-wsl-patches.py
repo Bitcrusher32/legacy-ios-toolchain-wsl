@@ -20,11 +20,12 @@ def replace_exact(path: Path, old: str, new: str, label: str) -> None:
     print(f"[patched] {label}: {path}")
 
 def remove_exact(path: Path, old: str, label: str) -> None:
-    text = path.read_text()
-    if old not in text:
+    old_bytes = old.encode("utf-8")
+    data = path.read_bytes()
+    if old_bytes not in data:
         print(f"[already removed] {label}: {path}")
         return
-    path.write_text(text.replace(old, ""))
+    path.write_bytes(data.replace(old_bytes, b""))
     print(f"[removed] {label}: {path}")
 
 def main() -> None:
