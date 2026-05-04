@@ -47,14 +47,14 @@ def main() -> None:
         print(f"[already patched] InputFiles.cpp sysconf CPU count: {input_files}")
     else:
         pattern = re.compile(
-            r"""(?m)^[ \\t]*unsigned int ncpus;\n"""
-            r"""^[ \\t]*int mib\[2\];\n"""
-            r"""^[ \\t]*size_t len = sizeof\(ncpus\);\n"""
-            r"""^[ \\t]*mib\[0\] = CTL_HW;\n"""
-            r"""^[ \\t]*mib\[1\] = HW_NCPU;\n"""
-            r"""^[ \\t]*if \(sysctl\(mib, 2, &ncpus, &len, NULL, 0\) != 0\) \{\n"""
-            r"""^[ \\t]*ncpus = 1;\n"""
-            r"""^[ \\t]*\}\n"""
+            r"""(?m)^[ \t]*unsigned int ncpus;\n"""
+            r"""^[ \t]*int mib\[2\];\n"""
+            r"""^[ \t]*size_t len = sizeof\(ncpus\);\n"""
+            r"""^[ \t]*mib\[0\] = CTL_HW;\n"""
+            r"""^[ \t]*mib\[1\] = HW_NCPU;\n"""
+            r"""^[ \t]*if \(sysctl\(mib, 2, &ncpus, &len, NULL, 0\) != 0\) \{\n"""
+            r"""^[ \t]*ncpus = 1;\n"""
+            r"""^[ \t]*\}\n"""
         )
         replacement = (
             "        long cpuCount = sysconf(_SC_NPROCESSORS_ONLN);\n"
