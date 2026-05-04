@@ -127,6 +127,10 @@ def main() -> None:
     text = text.replace("//#include <stddef.h>\n", "")
     if "#include <stddef.h>" not in text:
         text = text.replace("#include <sys/types.h>\n", "#include <stddef.h>\n#include <sys/types.h>\n", 1)
+    if "#include <cstddef>" not in text:
+        text = text.replace("#include <stddef.h>\n", "#include <stddef.h>\n#include <cstddef>\n", 1)
+    if "using std::ptrdiff_t;" not in text:
+        text = text.replace("#include <sys/types.h>\n", "#include <sys/types.h>\nusing std::ptrdiff_t;\n", 1)
     if text == original:
         print(f"[already patched] memutils.h Linux headers: {memutils_h}")
     else:
