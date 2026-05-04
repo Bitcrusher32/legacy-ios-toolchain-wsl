@@ -84,17 +84,18 @@ def main() -> None:
         "Options.cpp SDK fallback",
     )
 
-    replace_exact(
-        memutils_h,
-"""//#include <stddef.h>
-#include <security_utilities/utilities.h>
-#include <sys/types.h>
-""",
-"""#include <stddef.h>
-#include <sys/types.h>
-""",
-        "memutils.h Linux headers",
-    )
+    text = memutils_h.read_text()
+    original = text
+    text = text.replace("#include <security_utilities/utilities.h>\n", "")
+    text = text.replace("//#include <security_utilities/utilities.h>\n", "")
+    text = text.replace("//#include <stddef.h>\n", "")
+    if "#include <stddef.h>" not in text:
+        text = text.replace("#include <sys/types.h>\n", "#include <stddef.h>\n#include <sys/types.h>\n", 1)
+    if text == original:
+        print(f"[already patched] memutils.h Linux headers: {memutils_h}")
+    else:
+        memutils_h.write_text(text)
+        print(f"[patched] memutils.h Linux headers: {memutils_h}")
 
     cfi_repls = {
         "libunwind::CFI_Atom_Info<CFISection<x86_64>::OAS>::CFI_Atom_Info cfiArray[]":
