@@ -45,3 +45,17 @@ Run:
 
     ./scripts/verify-toolchain.sh
 
+
+## Reproducible build status
+
+Current automation level:
+
+1. Install dependencies:
+       ./scripts/install-deps-ubuntu-24.04.sh
+
+2. Clone/build/install helper:
+       ./scripts/build-toolchain.sh
+
+Important: patch application is not automated yet.
+
+Before a fresh build succeeds, the source fixes described in PATCHES.md still need to be applied manually or converted into patch files under `patches/`.
