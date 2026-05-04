@@ -1,0 +1,15 @@
+diff --git a/src/ld/parsers/macho_relocatable_file.cpp b/src/ld/parsers/macho_relocatable_file.cpp
+--- a/src/ld/parsers/macho_relocatable_file.cpp
++++ b/src/ld/parsers/macho_relocatable_file.cpp
+@@
+-									libunwind::CFI_Atom_Info<CFISection<x86_64>::OAS>::CFI_Atom_Info cfiArray[],
++									libunwind::CFI_Atom_Info<CFISection<x86_64>::OAS> cfiArray[],
+@@
+-									libunwind::CFI_Atom_Info<CFISection<x86>::OAS>::CFI_Atom_Info cfiArray[],
++									libunwind::CFI_Atom_Info<CFISection<x86>::OAS> cfiArray[],
+@@
+-									libunwind::CFI_Atom_Info<CFISection<arm>::OAS>::CFI_Atom_Info cfiArray[],
++									libunwind::CFI_Atom_Info<CFISection<arm>::OAS> cfiArray[],
+@@
+-									libunwind::CFI_Atom_Info<CFISection<arm64>::OAS>::CFI_Atom_Info cfiArray[],
++									libunwind::CFI_Atom_Info<CFISection<arm64>::OAS> cfiArray[],

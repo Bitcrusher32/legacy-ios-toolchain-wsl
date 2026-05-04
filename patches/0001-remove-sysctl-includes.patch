@@ -1,0 +1,7 @@
+diff --git a/src/ld/InputFiles.cpp b/src/ld/InputFiles.cpp
+--- a/src/ld/InputFiles.cpp
++++ b/src/ld/InputFiles.cpp
+@@
+-#include <sys/sysctl.h>
+@@
+-#include <sys/sysctl.h>

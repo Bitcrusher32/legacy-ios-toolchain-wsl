@@ -1,0 +1,14 @@
+diff --git a/src/ld/InputFiles.cpp b/src/ld/InputFiles.cpp
+--- a/src/ld/InputFiles.cpp
++++ b/src/ld/InputFiles.cpp
+@@
+-		unsigned int ncpus;
+-		int mib[2];
+-		size_t len = sizeof(ncpus);
+-		mib[0] = CTL_HW;
+-		mib[1] = HW_NCPU;
+-		if (sysctl(mib, 2, &ncpus, &len, NULL, 0) != 0) {
+-			ncpus = 1;
+-		}
++		long cpuCount = sysconf(_SC_NPROCESSORS_ONLN);
++		unsigned int ncpus = (cpuCount > 0) ? (unsigned int)cpuCount : 1;
