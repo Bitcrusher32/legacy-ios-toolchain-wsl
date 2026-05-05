@@ -23,6 +23,9 @@ case "${1:-}" in
 esac
 
 args=()
+args+=("-Wno-nullability-inferred-on-nested-type")
+args+=("-Wno-nullability-completeness-on-arrays")
+args+=("-Wno-nullability-completeness")
 for arg in "$@"; do
   case "$arg" in
     -fmodules|-fcxx-modules|-fmodules-validate-once-per-build-session)
@@ -50,6 +53,9 @@ case "${1:-}" in
 esac
 
 args=()
+args+=("-Wno-nullability-inferred-on-nested-type")
+args+=("-Wno-nullability-completeness-on-arrays")
+args+=("-Wno-nullability-completeness")
 for arg in "$@"; do
   case "$arg" in
     -fmodules|-fcxx-modules|-fmodules-validate-once-per-build-session)

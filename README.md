@@ -152,3 +152,19 @@ When a generated stub framework is placed early in `-F` search paths, it must in
 - a `Headers` symlink back to the real SDK headers
 
 Otherwise Clang may resolve the stub framework first and fail during header lookup.
+
+## Foundation stub milestone
+
+A minimal Foundation test package has been validated using a real Mach-O framework stub.
+
+Validated:
+- `NSClassFromString(@"NSObject")`
+- ARMv7 tweak compile/link/sign/package flow
+
+Additional wrapper suppressions required for old SDK headers under modern Clang:
+- `-Wno-nullability-inferred-on-nested-type`
+- `-Wno-nullability-completeness-on-arrays`
+- `-Wno-nullability-completeness`
+
+Current caveat:
+The generated stubs are host-side linker aids only. They are not runtime framework implementations.

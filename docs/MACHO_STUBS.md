@@ -18,3 +18,15 @@ Current caveats:
 - MobileSubstrate/CydiaSubstrate linking is not solved yet.
 - These stubs are host-side linker aids, not runtime implementations.
 - Do not treat current test packages as device-safe production tweaks.
+
+## Foundation validated
+
+Foundation baseline linking has now been validated with:
+- `Foundation.framework/Foundation`
+- `Foundation.framework/Headers -> real SDK Headers`
+
+Initial exported symbols:
+- `_NSClassFromString`
+- `___CFConstantStringClassReference`
+
+Modern Clang requires nullability warning suppressions for iPhoneOS9.3 Foundation headers when Theos uses `-Werror`.
