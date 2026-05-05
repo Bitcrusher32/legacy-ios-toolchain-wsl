@@ -120,3 +120,19 @@ Validated:
 
 Major caveat:
 This no-op package used a temporary `.tbd` overlay hack. Old `ld64` still ignores `.tbd` text stubs masquerading as `.dylib`/framework files. The package proves the host-side package pipeline, not real Objective-C/Foundation/Substrate linking correctness.
+
+## Mach-O SDK stubs
+
+Modern iPhoneOS SDKs provide `.tbd` text-based stubs. The recovered legacy `arm-apple-darwin-ld` does not consume these directly.
+
+A temporary no-op `.tbd` overlay can prove package mechanics, but real Objective-C references require real Mach-O stubs.
+
+Generate the currently validated minimal stubs with:
+
+    ./scripts/build-ios-machostubs.sh
+
+Validated so far:
+- `libobjc.dylib` exporting `_objc_getClass`
+- `libSystem.dylib` exporting `dyld_stub_binder`
+
+These are linker stubs only. They are not runtime implementations and are not yet enough for Foundation/CoreFoundation/Substrate-heavy tweaks.

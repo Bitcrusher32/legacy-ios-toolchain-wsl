@@ -62,7 +62,7 @@ for arg in "$@"; do
   esac
 done
 
-exec /usr/bin/clang++ -B"$(dirname "$0")" "${args[@]}"
+exec /usr/bin/clang++ -B"$(dirname "$0")" -L"$HOME/ios-sdk-machostubs/iPhoneOS9.3/usr/lib" "${args[@]}"
 WRAP
 
 cat > "$BIN/ldid" <<'WRAP'
