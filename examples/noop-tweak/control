@@ -1,0 +1,9 @@
+Package: com.bitcrusher32.nooptweak
+Name: NoOpTweak
+Version: 0.0.1
+Architecture: iphoneos-arm
+Description: Harmless no-op tweak for legacy toolchain validation.
+Maintainer: Bitcrusher32
+Author: Bitcrusher32
+Section: Tweaks
+Depends: mobilesubstrate

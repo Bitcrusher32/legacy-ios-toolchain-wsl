@@ -1,0 +1,15 @@
+export THEOS=/home/bitcrusher32/theos
+
+ARCHS = armv7
+TARGET = iphone:clang:latest:6.1
+
+include $(THEOS)/makefiles/common.mk
+
+TWEAK_NAME = NoOpTweak
+
+NoOpTweak_FILES = Tweak.xm
+
+include $(THEOS_MAKE_PATH)/tweak.mk
+
+# Explicit SDK lib path for legacy ld64/toolchain handoff.
+NoOpTweak_LDFLAGS += -L$(THEOS)/sdks/iPhoneOS16.5.sdk/usr/lib

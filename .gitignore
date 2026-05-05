@@ -9,3 +9,8 @@ tmp/
 # Python cache
 __pycache__/
 *.pyc
+
+# Theos/example build outputs
+examples/*/.theos/
+examples/*/packages/
+validate-host-pipeline-*.log
