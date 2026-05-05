@@ -84,3 +84,26 @@ Known remaining scope:
 - Theos tweak build is not validated
 - .deb packaging is not validated
 - device install/uninstall is not validated
+
+## Theos wrapper setup
+
+After the legacy toolchain is installed, Theos may still expect iPhone compiler tools under:
+
+    $THEOS/toolchain/linux/iphone/bin
+
+Run:
+
+    ./scripts/setup-theos-toolchain-links.sh
+
+This installs wrapper scripts/symlinks for:
+- clang
+- clang++
+- ar
+- ld
+- strip
+- ranlib
+- ldid
+- codesign_allocate
+
+Current caveat:
+The wrapper setup is enough to reach no-op ARMv7 dylib emission and signing experiments, but real Objective-C/Foundation linking is not solved yet when using modern `.tbd`-based SDKs with old ld64.
