@@ -144,8 +144,6 @@ Preferred cautious order:
 3. Remove package before respring if only testing dpkg/file placement.
 4. Only later test runtime loading with a deliberate respring.
 
-If runtime loading is intentionally tested later, use the least risky respring method available on the device.
-
 ## Uninstall package
 
 On device:

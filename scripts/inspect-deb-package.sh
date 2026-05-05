@@ -44,6 +44,26 @@ echo "=== DynamicLibraries payload ==="
 find "$TMP/data/Library/MobileSubstrate/DynamicLibraries" -maxdepth 1 \( -type f -o -type l \) -print 2>/dev/null | sort || true
 
 echo
+echo "=== safety red-flag paths ==="
+find "$TMP/data" \
+  \( -path '*/Library/LaunchDaemons/*' \
+  -o -path '*/System/*' \
+  -o -path '*/usr/bin/*' \
+  -o -path '*/usr/sbin/*' \
+  -o -path '*/bin/*' \
+  -o -path '*/sbin/*' \
+  -o -path '*/etc/*' \
+  -o -path '*/Library/PreferenceBundles/*' \
+  -o -path '*/Library/PreferenceLoader/*' \) \
+  -print | sort || true
+
+echo
+echo "=== maintainer scripts ==="
+find "$TMP/control" -maxdepth 1 -type f \
+  \( -name preinst -o -name postinst -o -name prerm -o -name postrm \) \
+  -print -exec sed -n '1,220p' {} \; || true
+
+echo
 echo "=== Mach-O details for dylibs ==="
 while IFS= read -r dylib; do
   echo
