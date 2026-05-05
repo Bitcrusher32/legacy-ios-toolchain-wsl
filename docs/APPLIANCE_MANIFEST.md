@@ -16,9 +16,9 @@ Generated/updated by:
 ## Host machine
 
 - Host OS: Windows 11
-- WSL distro name: FILL FROM POWERSHELL: wsl --list --verbose
-- WSL distro version: FILL FROM POWERSHELL
-- Export date: FILL AFTER EXPORT
+- WSL distro name: Ubuntu
+- WSL distro version: 2
+- Export date: 2026-05-05T18:27:47Z
 - Export operator: bitcrusher32
 
 ## Ubuntu / WSL environment
@@ -221,10 +221,10 @@ PowerShell commands:
 
 Recorded values:
 
-    source_distro=FILL_FROM_POWERSHELL
+    source_distro=Ubuntu
     export_path=C:\WSL-Backups\legacy-ios-toolchain-wsl-V1.21.tar
-    export_size=FILL_AFTER_EXPORT
-    sha256=FILL_AFTER_EXPORT
+    export_size=5689487360 bytes
+    sha256=781764A4DFA80340E8FD18C162A10B23658A4AB807DEF9301B84C4EC8DC123D8
 
 ## Restore test
 
@@ -255,3 +255,18 @@ This appliance proves host-side build/package reproducibility only.
 It does not prove package install safety, SpringBoard runtime behavior, MobileSubstrate runtime behavior, GPS spoof logic, or uninstall/recovery safety.
 
 No device install should be performed until docs/DEVICE_INSTALL_SAFETY_PLAN.md exists and has been reviewed.
+
+## Export privacy warning
+
+The WSL export tar is a private full-filesystem appliance image. Do not publish it publicly.
+
+It may contain shell history, SSH material, Git credentials, private files, downloaded SDKs, device notes, usernames, local paths, and other sensitive host artifacts.
+
+Recommended storage:
+
+    local encrypted drive
+    private offline backup
+    private access-controlled storage only
+
+Do not commit the export tar into Git.
+
