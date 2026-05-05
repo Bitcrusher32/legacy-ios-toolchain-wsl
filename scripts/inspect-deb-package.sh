@@ -37,7 +37,7 @@ find "$TMP/control" -maxdepth 2 -type f -print -exec sed -n '1,220p' {} \;
 echo
 echo "=== extracted data tree ==="
 dpkg-deb -x "$DEB" "$TMP/data"
-find "$TMP/data" -maxdepth 8 -type f -o -type l | sort
+find "$TMP/data" -maxdepth 8 \( -type f -o -type l \) | sort
 
 echo
 echo "=== DynamicLibraries payload ==="

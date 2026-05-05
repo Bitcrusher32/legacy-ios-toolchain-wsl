@@ -1,174 +1,172 @@
-# Legacy iOS Toolchain for WSL Ubuntu 24.04
+# Legacy iOS ARMv7 Toolchain Appliance for WSL Ubuntu 24.04
 
-Patched build notes and verification scripts for getting Tidal-Loop/linux-ios-toolchain working on WSL Ubuntu 24.04.
+Patched build scripts, Theos wrapper setup, Mach-O stub generation, validation examples, and WSL appliance documentation for building legacy iOS ARMv7 tweaks from WSL Ubuntu 24.04.
 
 Author: Bitcrusher32
 
-## Status
+## Current status
 
-Current validated ladder:
+V1 host-side preservation scope is complete.
 
-1. Legacy ARMv7 iOS toolchain build/install/verify on WSL Ubuntu 24.04: validated
-2. Theos wrapper setup: validated
-3. No-op Theos tweak `.deb`: validated
-4. Objective-C runtime symbol package: validated
-5. CoreFoundation symbol package: validated
-6. Foundation symbol package: validated
-7. Logos/MobileSubstrate minimal hook package: validated host-side
+Validated:
 
-Not yet validated:
+1. Legacy ARMv7 iOS toolchain build/install/verify on WSL Ubuntu 24.04
+2. fresh reproducible toolchain build using `scripts/build-toolchain.sh`
+3. Theos wrapper setup using `scripts/setup-theos-toolchain-links.sh`
+4. Mach-O SDK stub generation using `scripts/build-ios-machostubs.sh`
+5. no-op Theos tweak `.deb`
+6. Objective-C runtime symbol `.deb`
+7. CoreFoundation symbol `.deb`
+8. Foundation symbol `.deb`
+9. Logos/MobileSubstrate minimal hook `.deb`
+10. repo-hosted full host validation pipeline
+11. WSL export/import appliance preservation
+12. restored appliance host validation
 
-- harmless device install/uninstall
+Not validated:
+
+- device install/uninstall
+- device runtime behavior
+- SpringBoard runtime hook behavior on the real iPhone
 - FakeGPS logic
-- system-wide GPS spoofing
+- CoreLocation/locationd spoofing
 - preferences/UI
 
 Important caveat:
 
 Generated Mach-O SDK stubs are host-side linker aids only. They are not runtime implementations. The target iPhone provides the real frameworks at runtime.
 
-## Validated environment
+## Target context
 
-Host:
-- Windows 11 + WSL
+Validated host:
+
+- Windows 11 + WSL2
 - Ubuntu 24.04.3 LTS
 
-Target context:
-- ARMv7 legacy iOS
-- iPhone 4s / iOS 6.1.3 (tested context)
+Validated target build context:
 
-Compatibility with other devices/versions is unverified.
+- iPhone 4s
+- iOS 6.1.3
+- ARMv7
+- Theos target: `iphone:clang:9.3:6.1`
 
-## Base project
+Compatibility with other devices/iOS versions is unverified.
 
-https://github.com/Tidal-Loop/linux-ios-toolchain
+## Base toolchain project
 
-## Quick verify
+Base project:
 
-Run:
+    https://github.com/Tidal-Loop/linux-ios-toolchain
+
+This repository acts as the WSL/Linux reproducibility controller around that older toolchain.
+
+## Fresh toolchain build
+
+Install dependencies:
+
+    ./scripts/install-deps-ubuntu-24.04.sh
+
+Build/install the toolchain:
+
+    ./scripts/build-toolchain.sh
+
+Verify installed tools:
 
     ./scripts/verify-toolchain.sh
 
+The live source patching path is:
 
-## Reproducible build status
+    scripts/apply-linux-wsl-patches.py
 
-Current automation level:
+Old hand-written patch sketches are retained only under:
 
-1. Install dependencies:
-       ./scripts/install-deps-ubuntu-24.04.sh
+    docs/obsolete-patch-sketches/
 
-2. Clone/build/install helper:
-       ./scripts/build-toolchain.sh
+## Theos setup
 
-3. Linux/WSL source patching:
-       scripts/apply-linux-wsl-patches.py
-
-Patch application is automated by the Python patcher. The old hand-written patch sketches are not part of the live build path.
-
-## Reproducible build validation
-
-Fresh reproducible build/install has been validated using a throwaway WSL workdir.
-
-Validated flow:
-- clone this repo
-- clone Tidal-Loop/linux-ios-toolchain through build-toolchain.sh
-- initialize submodules
-- apply Linux/WSL compatibility patcher
-- run ./configure arm-apple-darwin
-- build cctools + ios tools
-- install to /usr/bin
-- run ARMv7 Mach-O smoke verification
-
-Validated smoke outputs:
-- test.o: Mach-O armv7 object
-- test_reloc.o: Mach-O armv7 object
-- libtest.a: current ar archive random library
-
-Known remaining scope:
-- full app/executable linking is not the current validation target
-- device install/uninstall is not validated
-- FakeGPS logic is not validated
-
-## Theos wrapper setup
-
-After the legacy toolchain is installed, Theos may still expect iPhone compiler tools under:
-
-    $THEOS/toolchain/linux/iphone/bin
-
-Run:
+After the legacy toolchain is installed, run:
 
     ./scripts/setup-theos-toolchain-links.sh
 
-This installs wrapper scripts/symlinks for:
-- clang
-- clang++
-- ar
-- ld
-- strip
-- ranlib
-- ldid
-- codesign_allocate
+This installs Theos wrapper scripts/symlinks under:
 
-Current caveat:
-The wrapper setup is enough to reach no-op ARMv7 dylib emission and signing experiments, but real Objective-C/Foundation linking is not solved yet when using modern `.tbd`-based SDKs with old ld64.
+    $THEOS/toolchain/linux/iphone/bin
 
-## No-op Theos package milestone
+The wrappers:
 
-A clean no-op Theos tweak has been compiled, signed, staged, and packaged as a `.deb` on the host.
-
-Validated:
-- ARMv7 tweak object compilation
-- Darwin linker handoff through Theos wrappers
-- ldid signing through wrapper that unsets `CODESIGN_ALLOCATE`
-- `.deb` package creation
-
-Major caveat:
-This no-op package used a temporary `.tbd` overlay hack. Old `ld64` still ignores `.tbd` text stubs masquerading as `.dylib`/framework files. The package proves the host-side package pipeline, not real Objective-C/Foundation/Substrate linking correctness.
+- answer Theos version probes
+- strip incompatible modern Clang module flags
+- suppress old SDK nullability warnings
+- force Darwin linker discovery with `-B`
+- add early Mach-O stub search paths
+- wrap `ldid` so `CODESIGN_ALLOCATE` does not break Linux signing
 
 ## Mach-O SDK stubs
 
-Modern iPhoneOS SDKs provide `.tbd` text-based stubs. The recovered legacy `arm-apple-darwin-ld` does not consume these directly.
+Modern iPhoneOS SDKs provide `.tbd` text-based stubs. The recovered legacy `arm-apple-darwin-ld` does not consume them directly.
 
-A temporary no-op `.tbd` overlay can prove package mechanics, but real Objective-C references require real Mach-O stubs.
-
-Generate the currently validated minimal stubs with:
+Generate the validated host-side Mach-O stubs with:
 
     ./scripts/build-ios-machostubs.sh
 
-Validated so far:
-- `libobjc.dylib` exporting `_objc_getClass`
-- `libSystem.dylib` exporting `dyld_stub_binder`
+Current generated stubs:
 
-These are linker stubs only. They are not runtime implementations and are not yet enough for Foundation/CoreFoundation/Substrate-heavy tweaks.
+- `usr/lib/libobjc.dylib`
+- `usr/lib/libSystem.dylib`
+- `System/Library/Frameworks/CoreFoundation.framework/CoreFoundation`
+- `System/Library/Frameworks/Foundation.framework/Foundation`
+- `Library/Frameworks/CydiaSubstrate.framework/CydiaSubstrate`
 
-## CoreFoundation stub milestone
+Framework stubs also need valid `Headers` symlinks when they appear early in `-F` search paths.
 
-A minimal CoreFoundation test package has been validated using a real Mach-O framework stub.
+## Full host validation
 
-Validated:
-- `CFStringCreateWithCString`
-- `kCFAllocatorDefault`
-- ARMv7 tweak compile/link/sign/package flow
+Run the entire host-side validation ladder:
 
-Framework-stub rule:
-When a generated stub framework is placed early in `-F` search paths, it must include:
-- the Mach-O binary, e.g. `CoreFoundation.framework/CoreFoundation`
-- a `Headers` symlink back to the real SDK headers
+    ./scripts/validate-host-pipeline.sh
 
-Otherwise Clang may resolve the stub framework first and fail during header lookup.
+This builds all repo-hosted examples:
 
-## Foundation stub milestone
+- `examples/noop-tweak/`
+- `examples/objc-runtime-test/`
+- `examples/corefoundation-test/`
+- `examples/foundation-test/`
+- `examples/logos-hook-test/`
 
-A minimal Foundation test package has been validated using a real Mach-O framework stub.
+Expected result:
 
-Validated:
-- `NSClassFromString(@"NSObject")`
-- ARMv7 tweak compile/link/sign/package flow
+    Host pipeline validation complete.
 
-Additional wrapper suppressions required for old SDK headers under modern Clang:
-- `-Wno-nullability-inferred-on-nested-type`
-- `-Wno-nullability-completeness-on-arrays`
-- `-Wno-nullability-completeness`
+Generated `.theos/`, `packages/`, and validation logs should not be committed.
 
-Current caveat:
-The generated stubs are host-side linker aids only. They are not runtime framework implementations.
+Clean generated outputs with:
+
+    ./scripts/clean-generated-artifacts.sh
+
+## Package inspection
+
+Before any device install, inspect a `.deb` on the host:
+
+    ./scripts/inspect-deb-package.sh path/to/package.deb
+
+The first install candidate should be a harmless no-op package, not FakeGPS logic.
+
+## WSL appliance preservation
+
+WSL export/import documentation:
+
+    docs/WSL_APPLIANCE_EXPORT.md
+
+Current appliance manifest:
+
+    docs/APPLIANCE_MANIFEST.md
+
+The WSL export tar is private. Do not publish it or commit it to Git.
+
+## Device safety
+
+Before touching the iPhone, follow:
+
+    docs/DEVICE_INSTALL_SAFETY_PLAN.md
+
+The next project branch should validate harmless install/uninstall, not GPS spoofing.

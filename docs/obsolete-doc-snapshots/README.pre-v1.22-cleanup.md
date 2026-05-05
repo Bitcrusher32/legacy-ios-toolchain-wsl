@@ -1,0 +1,174 @@
+# Legacy iOS Toolchain for WSL Ubuntu 24.04
+
+Patched build notes and verification scripts for getting Tidal-Loop/linux-ios-toolchain working on WSL Ubuntu 24.04.
+
+Author: Bitcrusher32
+
+## Status
+
+Current validated ladder:
+
+1. Legacy ARMv7 iOS toolchain build/install/verify on WSL Ubuntu 24.04: validated
+2. Theos wrapper setup: validated
+3. No-op Theos tweak `.deb`: validated
+4. Objective-C runtime symbol package: validated
+5. CoreFoundation symbol package: validated
+6. Foundation symbol package: validated
+7. Logos/MobileSubstrate minimal hook package: validated host-side
+
+Not yet validated:
+
+- harmless device install/uninstall
+- FakeGPS logic
+- system-wide GPS spoofing
+- preferences/UI
+
+Important caveat:
+
+Generated Mach-O SDK stubs are host-side linker aids only. They are not runtime implementations. The target iPhone provides the real frameworks at runtime.
+
+## Validated environment
+
+Host:
+- Windows 11 + WSL
+- Ubuntu 24.04.3 LTS
+
+Target context:
+- ARMv7 legacy iOS
+- iPhone 4s / iOS 6.1.3 (tested context)
+
+Compatibility with other devices/versions is unverified.
+
+## Base project
+
+https://github.com/Tidal-Loop/linux-ios-toolchain
+
+## Quick verify
+
+Run:
+
+    ./scripts/verify-toolchain.sh
+
+
+## Reproducible build status
+
+Current automation level:
+
+1. Install dependencies:
+       ./scripts/install-deps-ubuntu-24.04.sh
+
+2. Clone/build/install helper:
+       ./scripts/build-toolchain.sh
+
+3. Linux/WSL source patching:
+       scripts/apply-linux-wsl-patches.py
+
+Patch application is automated by the Python patcher. The old hand-written patch sketches are not part of the live build path.
+
+## Reproducible build validation
+
+Fresh reproducible build/install has been validated using a throwaway WSL workdir.
+
+Validated flow:
+- clone this repo
+- clone Tidal-Loop/linux-ios-toolchain through build-toolchain.sh
+- initialize submodules
+- apply Linux/WSL compatibility patcher
+- run ./configure arm-apple-darwin
+- build cctools + ios tools
+- install to /usr/bin
+- run ARMv7 Mach-O smoke verification
+
+Validated smoke outputs:
+- test.o: Mach-O armv7 object
+- test_reloc.o: Mach-O armv7 object
+- libtest.a: current ar archive random library
+
+Known remaining scope:
+- full app/executable linking is not the current validation target
+- device install/uninstall is not validated
+- FakeGPS logic is not validated
+
+## Theos wrapper setup
+
+After the legacy toolchain is installed, Theos may still expect iPhone compiler tools under:
+
+    $THEOS/toolchain/linux/iphone/bin
+
+Run:
+
+    ./scripts/setup-theos-toolchain-links.sh
+
+This installs wrapper scripts/symlinks for:
+- clang
+- clang++
+- ar
+- ld
+- strip
+- ranlib
+- ldid
+- codesign_allocate
+
+Current caveat:
+The wrapper setup is enough to reach no-op ARMv7 dylib emission and signing experiments, but real Objective-C/Foundation linking is not solved yet when using modern `.tbd`-based SDKs with old ld64.
+
+## No-op Theos package milestone
+
+A clean no-op Theos tweak has been compiled, signed, staged, and packaged as a `.deb` on the host.
+
+Validated:
+- ARMv7 tweak object compilation
+- Darwin linker handoff through Theos wrappers
+- ldid signing through wrapper that unsets `CODESIGN_ALLOCATE`
+- `.deb` package creation
+
+Major caveat:
+This no-op package used a temporary `.tbd` overlay hack. Old `ld64` still ignores `.tbd` text stubs masquerading as `.dylib`/framework files. The package proves the host-side package pipeline, not real Objective-C/Foundation/Substrate linking correctness.
+
+## Mach-O SDK stubs
+
+Modern iPhoneOS SDKs provide `.tbd` text-based stubs. The recovered legacy `arm-apple-darwin-ld` does not consume these directly.
+
+A temporary no-op `.tbd` overlay can prove package mechanics, but real Objective-C references require real Mach-O stubs.
+
+Generate the currently validated minimal stubs with:
+
+    ./scripts/build-ios-machostubs.sh
+
+Validated so far:
+- `libobjc.dylib` exporting `_objc_getClass`
+- `libSystem.dylib` exporting `dyld_stub_binder`
+
+These are linker stubs only. They are not runtime implementations and are not yet enough for Foundation/CoreFoundation/Substrate-heavy tweaks.
+
+## CoreFoundation stub milestone
+
+A minimal CoreFoundation test package has been validated using a real Mach-O framework stub.
+
+Validated:
+- `CFStringCreateWithCString`
+- `kCFAllocatorDefault`
+- ARMv7 tweak compile/link/sign/package flow
+
+Framework-stub rule:
+When a generated stub framework is placed early in `-F` search paths, it must include:
+- the Mach-O binary, e.g. `CoreFoundation.framework/CoreFoundation`
+- a `Headers` symlink back to the real SDK headers
+
+Otherwise Clang may resolve the stub framework first and fail during header lookup.
+
+## Foundation stub milestone
+
+A minimal Foundation test package has been validated using a real Mach-O framework stub.
+
+Validated:
+- `NSClassFromString(@"NSObject")`
+- ARMv7 tweak compile/link/sign/package flow
+
+Additional wrapper suppressions required for old SDK headers under modern Clang:
+- `-Wno-nullability-inferred-on-nested-type`
+- `-Wno-nullability-completeness-on-arrays`
+- `-Wno-nullability-completeness`
+
+Current caveat:
+The generated stubs are host-side linker aids only. They are not runtime framework implementations.

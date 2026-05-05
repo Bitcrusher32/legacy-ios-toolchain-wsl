@@ -5,18 +5,8 @@ The recovered legacy `ld64` used by this WSL legacy iOS toolchain does not consu
 ## Observed behavior
 
 - `.tbd` files symlinked as `.dylib` or framework binaries are found by `ld64` but ignored as unsupported text format.
-- No-op packages can build without real external symbol references, but real Objective-C/Foundation/CoreFoundation/Substrate references require real Mach-O stubs.
-- A real Mach-O stub can be generated locally with the recovered assembler/linker and placed before `.tbd` SDK paths.
-
-## Generated stub root
-
-Default:
-
-    ~/ios-sdk-machostubs/iPhoneOS9.3
-
-Override:
-
-    IOS_MACHOSTUBS_ROOT=/custom/path ./scripts/build-ios-machostubs.sh
+- No-op tweak packages can build with the temporary `.tbd` overlay only because no real external runtime symbols are referenced.
+- Real Objective-C/Foundation/CoreFoundation references require real Mach-O stubs.
 
 ## Validated stubs
 
@@ -28,7 +18,8 @@ Initial exported symbol:
 
 Validated by:
 
-- `examples/objc-runtime-test/`
+- `~/ObjCRuntimeTest`
+- package: `com.bitcrusher32.objcruntimetest_0.0.1-1+debug_iphoneos-arm.deb`
 
 ### `usr/lib/libSystem.dylib`
 
@@ -36,7 +27,7 @@ Initial exported symbol:
 
 - `dyld_stub_binder`
 
-Used to satisfy lazy-binding support needed after `libobjc` is accepted.
+Used to satisfy lazy-binding support needed after `libobjc` was accepted.
 
 ### `System/Library/Frameworks/CoreFoundation.framework/CoreFoundation`
 
@@ -47,7 +38,8 @@ Initial exported symbols:
 
 Validated by:
 
-- `examples/corefoundation-test/`
+- `~/CoreFoundationTest`
+- package: `com.bitcrusher32.corefoundationtest_0.0.1-1+debug_iphoneos-arm.deb`
 
 ### `System/Library/Frameworks/Foundation.framework/Foundation`
 
@@ -58,18 +50,8 @@ Initial exported symbols:
 
 Validated by:
 
-- `examples/foundation-test/`
-
-### `Library/Frameworks/CydiaSubstrate.framework/CydiaSubstrate`
-
-Initial exported symbols:
-
-- `_MSHookMessageEx`
-- `_MSHookFunction`
-
-Validated by:
-
-- `examples/logos-hook-test/`
+- `~/FoundationTest`
+- package: `com.bitcrusher32.foundationtest_0.0.1-1+debug_iphoneos-arm.deb`
 
 ## Framework-stub rule
 
@@ -77,9 +59,8 @@ Generated framework stubs need both:
 
 1. A real Mach-O framework binary:
    - `FrameworkName.framework/FrameworkName`
-2. A valid `Headers` symlink:
-   - SDK frameworks point to the real SDK headers.
-   - CydiaSubstrate points to Theos vendor framework headers.
+2. A `Headers` symlink pointing to the real SDK headers:
+   - `FrameworkName.framework/Headers -> $THEOS/sdks/iPhoneOS9.3.sdk/System/Library/Frameworks/FrameworkName.framework/Headers`
 
 Without the `Headers` symlink, an early `-F` machostubs path can make Clang resolve the stub framework first and then fail to find headers.
 
@@ -93,16 +74,26 @@ The wrapper scripts suppress:
 - `-Wno-nullability-completeness-on-arrays`
 - `-Wno-nullability-completeness`
 
-The wrapper scripts also strip incompatible module flags from Theos' generated compiler invocations.
-
 ## Caveats
 
 These stubs are host-side linker aids only. They are not runtime implementations.
 
-Do not treat current test packages as device-safe production tweaks.
+Do not treat current test packages as device-safe production tweaks. The next unresolved areas are:
 
-The next unresolved areas are:
-
-- harmless device install/uninstall workflow
-- runtime behavior on the actual iPhone
+- Harmless install/uninstall workflow
 - FakeGPS logic
+- Runtime validation on the actual iPhone
+
+## CydiaSubstrate validated
+
+A minimal Logos/MobileSubstrate hook package has been validated host-side using:
+
+- `Library/Frameworks/CydiaSubstrate.framework/CydiaSubstrate`
+- `CydiaSubstrate.framework/Headers -> $THEOS/vendor/lib/CydiaSubstrate.framework/Headers`
+
+Initial exported symbols:
+
+- `_MSHookMessageEx`
+- `_MSHookFunction`
+
+This validates host-side Logos/Substrate package generation, not device runtime behavior.

@@ -31,6 +31,10 @@ build_example() {
   make package messages=yes
 
   echo "=== Package artifacts for $name ==="
+  if ! find "$dir/packages" -maxdepth 1 -type f -name '*.deb' -print -quit | grep -q .; then
+    echo "No .deb package produced for example: $name" >&2
+    exit 1
+  fi
   find "$dir/packages" -maxdepth 1 -type f -name '*.deb' -ls
 }
 
