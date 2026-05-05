@@ -124,3 +124,40 @@ fi
 file "$FOUNDATION_FRAMEWORK_DIR/Foundation"
 arm-apple-darwin-nm -g "$FOUNDATION_FRAMEWORK_DIR/Foundation" | grep -E 'NSClassFromString|CFConstantStringClassReference' || true
 
+# CydiaSubstrate framework stub.
+CYDIA_SUBSTRATE_FRAMEWORK_DIR="$STUB_ROOT/Library/Frameworks/CydiaSubstrate.framework"
+mkdir -p "$CYDIA_SUBSTRATE_FRAMEWORK_DIR"
+
+cat > "$CYDIA_SUBSTRATE_FRAMEWORK_DIR/CydiaSubstrate_stub.s" <<'ASM'
+.text
+.align 2
+
+.globl _MSHookMessageEx
+_MSHookMessageEx:
+    bx lr
+
+.globl _MSHookFunction
+_MSHookFunction:
+    bx lr
+ASM
+
+arm-apple-darwin-as -arch armv7 -o "$CYDIA_SUBSTRATE_FRAMEWORK_DIR/CydiaSubstrate_stub.o" "$CYDIA_SUBSTRATE_FRAMEWORK_DIR/CydiaSubstrate_stub.s"
+
+arm-apple-darwin-ld \
+  -arch armv7 \
+  -dylib \
+  -install_name /Library/Frameworks/CydiaSubstrate.framework/CydiaSubstrate \
+  -o "$CYDIA_SUBSTRATE_FRAMEWORK_DIR/CydiaSubstrate" \
+  "$CYDIA_SUBSTRATE_FRAMEWORK_DIR/CydiaSubstrate_stub.o"
+
+if [ -n "${THEOS:-}" ] && [ -d "$THEOS/vendor/lib/CydiaSubstrate.framework/Headers" ]; then
+  ln -sfn \
+    "$THEOS/vendor/lib/CydiaSubstrate.framework/Headers" \
+    "$CYDIA_SUBSTRATE_FRAMEWORK_DIR/Headers"
+else
+  echo "Warning: THEOS not set or CydiaSubstrate framework headers not found; Headers symlink not created."
+fi
+
+file "$CYDIA_SUBSTRATE_FRAMEWORK_DIR/CydiaSubstrate"
+arm-apple-darwin-nm -g "$CYDIA_SUBSTRATE_FRAMEWORK_DIR/CydiaSubstrate" | grep -E 'MSHookMessageEx|MSHookFunction' || true
+

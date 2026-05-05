@@ -22,6 +22,9 @@ Validated host-side as of the Foundation milestone.
 - Foundation symbol test package using:
   - `Foundation.framework/Foundation`
   - `Foundation.framework/Headers -> real SDK Headers`
+- Logos/MobileSubstrate hook package using:
+  - `CydiaSubstrate.framework/CydiaSubstrate`
+  - `CydiaSubstrate.framework/Headers -> real Theos vendor Headers`
 
 ## Current validated ladder
 
@@ -29,11 +32,10 @@ Validated host-side as of the Foundation milestone.
 2. Objective-C runtime package: validated
 3. CoreFoundation package: validated
 4. Foundation package: validated
+5. Logos/MobileSubstrate minimal hook package: validated host-side
 
 ## Not yet validated
 
-- Logos hook package after the latest wrapper/stub improvements
-- MobileSubstrate/CydiaSubstrate link stubs
 - Harmless device install/uninstall
 - FakeGPS logic
 - System-wide GPS spoofing

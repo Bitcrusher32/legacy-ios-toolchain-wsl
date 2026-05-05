@@ -38,7 +38,7 @@ for arg in "$@"; do
   esac
 done
 
-exec /usr/bin/clang -B"$(dirname "$0")" -F"$HOME/ios-sdk-machostubs/iPhoneOS9.3/System/Library/Frameworks" "${args[@]}"
+exec /usr/bin/clang -B"$(dirname "$0")" -F"$HOME/ios-sdk-machostubs/iPhoneOS9.3/Library/Frameworks" -F"$HOME/ios-sdk-machostubs/iPhoneOS9.3/System/Library/Frameworks" "${args[@]}"
 WRAP
 
 cat > "$BIN/clang++" <<'WRAP'
@@ -68,7 +68,7 @@ for arg in "$@"; do
   esac
 done
 
-exec /usr/bin/clang++ -B"$(dirname "$0")" -L"$HOME/ios-sdk-machostubs/iPhoneOS9.3/usr/lib" -F"$HOME/ios-sdk-machostubs/iPhoneOS9.3/System/Library/Frameworks" "${args[@]}"
+exec /usr/bin/clang++ -B"$(dirname "$0")" -L"$HOME/ios-sdk-machostubs/iPhoneOS9.3/usr/lib" -F"$HOME/ios-sdk-machostubs/iPhoneOS9.3/Library/Frameworks" -F"$HOME/ios-sdk-machostubs/iPhoneOS9.3/System/Library/Frameworks" "${args[@]}"
 WRAP
 
 cat > "$BIN/ldid" <<'WRAP'

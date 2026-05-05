@@ -14,11 +14,10 @@ Current validated ladder:
 4. Objective-C runtime symbol package: validated
 5. CoreFoundation symbol package: validated
 6. Foundation symbol package: validated
+7. Logos/MobileSubstrate minimal hook package: validated host-side
 
 Not yet validated:
 
-- Logos hook package after latest wrappers/stubs
-- MobileSubstrate/CydiaSubstrate link stubs
 - harmless device install/uninstall
 - FakeGPS logic
 - system-wide GPS spoofing
@@ -87,8 +86,6 @@ Validated smoke outputs:
 
 Known remaining scope:
 - full app/executable linking is not the current validation target
-- Logos hook package after latest wrappers/stubs is not validated
-- MobileSubstrate/CydiaSubstrate link stubs are not validated
 - device install/uninstall is not validated
 - FakeGPS logic is not validated
 

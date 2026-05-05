@@ -80,6 +80,20 @@ These stubs are host-side linker aids only. They are not runtime implementations
 
 Do not treat current test packages as device-safe production tweaks. The next unresolved areas are:
 
-- Logos hook revalidation
-- MobileSubstrate/CydiaSubstrate link stubs
 - Harmless install/uninstall workflow
+- FakeGPS logic
+- Runtime validation on the actual iPhone
+
+## CydiaSubstrate validated
+
+A minimal Logos/MobileSubstrate hook package has been validated host-side using:
+
+- `Library/Frameworks/CydiaSubstrate.framework/CydiaSubstrate`
+- `CydiaSubstrate.framework/Headers -> $THEOS/vendor/lib/CydiaSubstrate.framework/Headers`
+
+Initial exported symbols:
+
+- `_MSHookMessageEx`
+- `_MSHookFunction`
+
+This validates host-side Logos/Substrate package generation, not device runtime behavior.
