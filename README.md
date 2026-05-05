@@ -107,3 +107,16 @@ This installs wrapper scripts/symlinks for:
 
 Current caveat:
 The wrapper setup is enough to reach no-op ARMv7 dylib emission and signing experiments, but real Objective-C/Foundation linking is not solved yet when using modern `.tbd`-based SDKs with old ld64.
+
+## No-op Theos package milestone
+
+A clean no-op Theos tweak has been compiled, signed, staged, and packaged as a `.deb` on the host.
+
+Validated:
+- ARMv7 tweak object compilation
+- Darwin linker handoff through Theos wrappers
+- ldid signing through wrapper that unsets `CODESIGN_ALLOCATE`
+- `.deb` package creation
+
+Major caveat:
+This no-op package used a temporary `.tbd` overlay hack. Old `ld64` still ignores `.tbd` text stubs masquerading as `.dylib`/framework files. The package proves the host-side package pipeline, not real Objective-C/Foundation/Substrate linking correctness.
