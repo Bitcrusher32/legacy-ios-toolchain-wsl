@@ -2,59 +2,55 @@
 
 This manifest records the known-good environment for the legacy iOS ARMv7 WSL toolchain appliance.
 
-Update this file after running the host validation pipeline and before exporting the WSL distro.
+Generated/updated by:
+
+    scripts/update-appliance-manifest.sh
 
 ## Manifest version
 
 - LogDoc scope: V1.21
 - Appliance label: legacy-ios-toolchain-wsl-V1.21
-- Status: TEMPLATE / FILL BEFORE FINAL EXPORT
+- Status: HOST VALIDATION PASSED / READY FOR WSL EXPORT
+- Snapshot timestamp UTC: 2026-05-05T18:19:28Z
 
 ## Host machine
 
 - Host OS: Windows 11
-- WSL distro name:
-- WSL distro version:
-- Export date:
+- WSL distro name: FILL FROM POWERSHELL: wsl --list --verbose
+- WSL distro version: FILL FROM POWERSHELL
+- Export date: FILL AFTER EXPORT
 - Export operator: bitcrusher32
 
 ## Ubuntu / WSL environment
 
-Fill using:
-
-    cat /etc/os-release
-    uname -a
-    whoami
-    pwd
-
 Recorded values:
 
-    PRETTY_NAME=
-    VERSION_ID=
-    VERSION_CODENAME=
-    kernel=
-    user=
-    home=
+    PRETTY_NAME=Ubuntu 24.04.3 LTS
+    VERSION_ID=24.04
+    VERSION_CODENAME=noble
+    kernel=Linux PIXELASPIRE96 6.6.87.2-microsoft-standard-WSL2 #1 SMP PREEMPT_DYNAMIC Thu Jun  5 18:30:46 UTC 2025 x86_64 x86_64 x86_64 GNU/Linux
+    user=bitcrusher32
+    home=/home/bitcrusher32
 
 ## Repository
 
-Fill using:
-
-    cd ~/legacy-ios-toolchain-wsl
-    git remote -v
-    git branch --show-current
-    git rev-parse HEAD
-    git status --short
-
 Recorded values:
 
-    repo_path=~/legacy-ios-toolchain-wsl
-    remote=
-    branch=
-    commit=
-    working_tree_status=
+    repo_path=/home/bitcrusher32/legacy-ios-toolchain-wsl
+    branch=main
+    commit=b8ca12079758ec873644d1ac1096deaff7959168
+    working_tree_status=dirty_or_untracked
 
-Expected working tree before export:
+Remote:
+
+    origin https://git.bitcrusher32.win/bitcrusher32/theros-monumental-wsl-toolkit.git (fetch)
+    origin https://git.bitcrusher32.win/bitcrusher32/theros-monumental-wsl-toolkit.git (push)
+
+Git status --short at snapshot time:
+
+    ?? scripts/update-appliance-manifest.sh
+
+Expected working tree before final export:
 
     clean, or only intentionally untracked local logs
 
@@ -62,81 +58,101 @@ Expected working tree before export:
 
 Recorded values:
 
-    toolchain_source_path=~/linux-ios-toolchain
-    controller_repo_path=~/legacy-ios-toolchain-wsl
+    toolchain_source_path=/home/bitcrusher32/linux-ios-toolchain
+    controller_repo_path=/home/bitcrusher32/legacy-ios-toolchain-wsl
 
 ## Installed toolchain binaries
 
-Fill using:
-
-    which arm-apple-darwin-ar
-    which arm-apple-darwin-ld
-    which arm-apple-darwin-as
-    which ldid
-    arm-apple-darwin-ld -v 2>&1 | head -5
-
 Recorded values:
 
-    arm-apple-darwin-ar=
-    arm-apple-darwin-ld=
-    arm-apple-darwin-as=
-    ldid=
-    arm-apple-darwin-ld_version=
+    arm-apple-darwin-ar=/usr/bin/arm-apple-darwin-ar
+    arm-apple-darwin-ld=/usr/bin/arm-apple-darwin-ld
+    arm-apple-darwin-as=/usr/bin/arm-apple-darwin-as
+    ldid=/usr/bin/ldid
+
+arm-apple-darwin-ld version output:
+
+    241.9
+    configured to support archs: armv4t armv5 armv6 armv7 armv7f armv7k armv7s armv6m armv7m armv7em armv8 arm64 arm64v8 i386 x86_64 x86_64h
+    LTO support using: LLVM version 18.1.3
 
 ## Theos
 
-Fill using:
-
-    echo "$THEOS"
-    ls -la ~/theos | head
-    find ~/theos/sdks -maxdepth 1 -type d -name 'iPhoneOS*.sdk' | sort
-
 Recorded values:
 
-    THEOS=
-    theos_path=~/theos
-    sdks_present=
+    THEOS=/home/bitcrusher32/theos
+    theos_path=/home/bitcrusher32/theos
+    sdks_present=iPhoneOS10.3.sdk iPhoneOS11.4.sdk iPhoneOS12.4.sdk iPhoneOS13.7.sdk iPhoneOS14.5.sdk iPhoneOS15.6.sdk iPhoneOS16.5.sdk iPhoneOS9.3.sdk 
     primary_sdk=iPhoneOS9.3.sdk
     target=iphone:clang:9.3:6.1
     arch=armv7
 
 ## Theos wrapper paths
 
-Fill using:
-
-    ls -la "$THEOS/toolchain/linux/iphone/bin"
-    sed -n '1,140p' "$THEOS/toolchain/linux/iphone/bin/clang"
-    sed -n '1,160p' "$THEOS/toolchain/linux/iphone/bin/clang++"
-    sed -n '1,80p' "$THEOS/toolchain/linux/iphone/bin/ldid"
-
 Recorded values:
 
-    wrapper_bin=$THEOS/toolchain/linux/iphone/bin
-    clang_wrapper=
-    clangxx_wrapper=
-    ldid_wrapper=
+    wrapper_bin=/home/bitcrusher32/theos/toolchain/linux/iphone/bin
+    clang_wrapper=/home/bitcrusher32/theos/toolchain/linux/iphone/bin/clang
+    clangxx_wrapper=/home/bitcrusher32/theos/toolchain/linux/iphone/bin/clang++
+    ldid_wrapper=/home/bitcrusher32/theos/toolchain/linux/iphone/bin/ldid
+
+Wrapper directory listing:
+
+    total 44
+    drwxr-xr-x 2 bitcrusher32 bitcrusher32 4096 May  5 13:51 .
+    drwxr-xr-x 3 bitcrusher32 bitcrusher32 4096 May  3 05:03 ..
+    lrwxrwxrwx 1 bitcrusher32 bitcrusher32   28 May  5 13:51 ar -> /usr/bin/arm-apple-darwin-ar
+    -rwxr-xr-x 1 bitcrusher32 bitcrusher32  714 May  5 13:51 clang
+    -rwxr-xr-x 1 bitcrusher32 bitcrusher32  765 May  5 13:51 clang++
+    -rwxr-xr-x 1 bitcrusher32 bitcrusher32  497 May  5 12:23 clang++.pre-cf-machostub-path
+    -rwxr-xr-x 1 bitcrusher32 bitcrusher32  564 May  5 12:35 clang++.pre-foundation-nullability-fix
+    -rwxr-xr-x 1 bitcrusher32 bitcrusher32  448 May  5 12:00 clang++.pre-machostub-path
+    -rwxr-xr-x 1 bitcrusher32 bitcrusher32  446 May  5 12:23 clang.pre-cf-machostub-path
+    -rwxr-xr-x 1 bitcrusher32 bitcrusher32  513 May  5 12:35 clang.pre-foundation-nullability-fix
+    -rwxr-xr-x 1 bitcrusher32 bitcrusher32  130 May  5 13:51 codesign_allocate
+    lrwxrwxrwx 1 bitcrusher32 bitcrusher32   28 May  5 13:51 ld -> /usr/bin/arm-apple-darwin-ld
+    -rwxr-xr-x 1 bitcrusher32 bitcrusher32   68 May  5 13:51 ldid
+    lrwxrwxrwx 1 bitcrusher32 bitcrusher32   32 May  5 13:51 ranlib -> /usr/bin/arm-apple-darwin-ranlib
+    lrwxrwxrwx 1 bitcrusher32 bitcrusher32   31 May  5 13:51 strip -> /usr/bin/arm-apple-darwin-strip
 
 Required wrapper behavior:
 
-- `clang` and `clang++` return a version for `-dumpversion`.
-- wrappers pass `-B"$THEOS/toolchain/linux/iphone/bin"` for Darwin linker discovery.
+- clang and clang++ return a version for -dumpversion.
+- wrappers pass -B for Darwin linker discovery.
 - wrappers strip incompatible modules flags.
 - wrappers suppress old SDK nullability warnings.
 - wrappers include early Mach-O stub paths:
-  - `$HOME/ios-sdk-machostubs/iPhoneOS9.3/usr/lib`
-  - `$HOME/ios-sdk-machostubs/iPhoneOS9.3/Library/Frameworks`
-  - `$HOME/ios-sdk-machostubs/iPhoneOS9.3/System/Library/Frameworks`
-- `ldid` wrapper unsets `CODESIGN_ALLOCATE`.
+  - /home/bitcrusher32/ios-sdk-machostubs/iPhoneOS9.3/usr/lib
+  - /home/bitcrusher32/ios-sdk-machostubs/iPhoneOS9.3/Library/Frameworks
+  - /home/bitcrusher32/ios-sdk-machostubs/iPhoneOS9.3/System/Library/Frameworks
+- ldid wrapper unsets CODESIGN_ALLOCATE.
 
 ## Mach-O stub root
 
-Fill using:
-
-    find ~/ios-sdk-machostubs/iPhoneOS9.3 -maxdepth 6 \( -type f -o -type l \) | sort
-
 Recorded values:
 
-    machostub_root=~/ios-sdk-machostubs/iPhoneOS9.3
+    machostub_root=/home/bitcrusher32/ios-sdk-machostubs/iPhoneOS9.3
+
+Generated stubs currently present:
+
+    ios-sdk-machostubs/iPhoneOS9.3/Library/Frameworks/CydiaSubstrate.framework/CydiaSubstrate
+    ios-sdk-machostubs/iPhoneOS9.3/Library/Frameworks/CydiaSubstrate.framework/CydiaSubstrate_stub.o
+    ios-sdk-machostubs/iPhoneOS9.3/Library/Frameworks/CydiaSubstrate.framework/CydiaSubstrate_stub.s
+    ios-sdk-machostubs/iPhoneOS9.3/Library/Frameworks/CydiaSubstrate.framework/Headers
+    ios-sdk-machostubs/iPhoneOS9.3/System/Library/Frameworks/CoreFoundation.framework/CoreFoundation
+    ios-sdk-machostubs/iPhoneOS9.3/System/Library/Frameworks/CoreFoundation.framework/CoreFoundation_stub.o
+    ios-sdk-machostubs/iPhoneOS9.3/System/Library/Frameworks/CoreFoundation.framework/CoreFoundation_stub.s
+    ios-sdk-machostubs/iPhoneOS9.3/System/Library/Frameworks/CoreFoundation.framework/Headers
+    ios-sdk-machostubs/iPhoneOS9.3/System/Library/Frameworks/Foundation.framework/Foundation
+    ios-sdk-machostubs/iPhoneOS9.3/System/Library/Frameworks/Foundation.framework/Foundation_stub.o
+    ios-sdk-machostubs/iPhoneOS9.3/System/Library/Frameworks/Foundation.framework/Foundation_stub.s
+    ios-sdk-machostubs/iPhoneOS9.3/System/Library/Frameworks/Foundation.framework/Headers
+    ios-sdk-machostubs/iPhoneOS9.3/usr/lib/libSystem.dylib
+    ios-sdk-machostubs/iPhoneOS9.3/usr/lib/libSystem_stub.o
+    ios-sdk-machostubs/iPhoneOS9.3/usr/lib/libSystem_stub.s
+    ios-sdk-machostubs/iPhoneOS9.3/usr/lib/libobjc.dylib
+    ios-sdk-machostubs/iPhoneOS9.3/usr/lib/libobjc_stub.o
+    ios-sdk-machostubs/iPhoneOS9.3/usr/lib/libobjc_stub.s
 
 Expected generated stubs:
 
@@ -171,17 +187,17 @@ Expected exported symbols:
 
 ## Host validation pipeline
 
-Fill using:
-
-    cd ~/legacy-ios-toolchain-wsl
-    ./scripts/validate-host-pipeline.sh 2>&1 | tee validate-host-pipeline-appliance.log
-    find examples -path '*/packages/*.deb' -type f -ls
-
 Recorded values:
 
-    validation_date=
-    validation_result=
-    validation_log=
+    validation_date=2026-05-05T18:19:47Z
+    validation_result=PASS_HOST_PIPELINE
+    validation_log=validate-host-pipeline-appliance.log
+
+Expected command:
+
+    cd /home/bitcrusher32/legacy-ios-toolchain-wsl
+    ./scripts/validate-host-pipeline.sh 2>&1 | tee validate-host-pipeline-appliance.log
+    find examples -path '*/packages/*.deb' -type f -ls
 
 Expected package outputs:
 
@@ -205,10 +221,10 @@ PowerShell commands:
 
 Recorded values:
 
-    source_distro=
+    source_distro=FILL_FROM_POWERSHELL
     export_path=C:\WSL-Backups\legacy-ios-toolchain-wsl-V1.21.tar
-    export_size=
-    sha256=
+    export_size=FILL_AFTER_EXPORT
+    sha256=FILL_AFTER_EXPORT
 
 ## Restore test
 
@@ -228,9 +244,9 @@ Inside restored WSL:
 Recorded values:
 
     restore_test_distro=LegacyIOSToolchain-V1.21
-    restore_test_date=
-    restore_validation_result=
-    restore_validation_log=
+    restore_test_date=FILL_AFTER_RESTORE_TEST
+    restore_validation_result=FILL_AFTER_RESTORE_TEST
+    restore_validation_log=validate-host-pipeline-restored.log
 
 ## Safety boundary
 
@@ -238,4 +254,4 @@ This appliance proves host-side build/package reproducibility only.
 
 It does not prove package install safety, SpringBoard runtime behavior, MobileSubstrate runtime behavior, GPS spoof logic, or uninstall/recovery safety.
 
-No device install should be performed until `docs/DEVICE_INSTALL_SAFETY_PLAN.md` exists and has been reviewed.
+No device install should be performed until docs/DEVICE_INSTALL_SAFETY_PLAN.md exists and has been reviewed.
