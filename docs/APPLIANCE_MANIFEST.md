@@ -244,8 +244,8 @@ Inside restored WSL:
 Recorded values:
 
     restore_test_distro=LegacyIOSToolchain-V1.21
-    restore_test_date=FILL_AFTER_RESTORE_TEST
-    restore_validation_result=FILL_AFTER_RESTORE_TEST
+    restore_test_date=2026-05-05T18:30:53Z
+    restore_validation_result=PASS_HOST_PIPELINE_RESTORED_WSL
     restore_validation_log=validate-host-pipeline-restored.log
 
 ## Safety boundary
