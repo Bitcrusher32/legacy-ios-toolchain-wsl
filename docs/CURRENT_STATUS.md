@@ -25,6 +25,8 @@ Current scope: V1 legacy iOS ARMv7 toolchain + Theos host-side preservation/repr
 - WSL appliance export
 - WSL appliance import/restore test
 - Restored appliance host validation
+- NoOpTweak device install/file-placement/uninstall
+- NoOpTweak device runtime/respring lifecycle
 
 ## Current validated ladder
 
@@ -38,11 +40,12 @@ Current scope: V1 legacy iOS ARMv7 toolchain + Theos host-side preservation/repr
 8. Logos/MobileSubstrate minimal hook package
 9. WSL export
 10. WSL import/restore validation
+11. NoOpTweak device install/file-placement/uninstall
+12. NoOpTweak runtime/respring/uninstall lifecycle
 
 ## Not yet validated
 
-- Device install/uninstall
-- Device runtime behavior
+- LogosHookTest device runtime behavior
 - SpringBoard runtime hook behavior on the real iPhone
 - FakeGPS logic
 - CoreLocation/locationd spoofing

@@ -22,11 +22,12 @@ Validated:
 10. repo-hosted full host validation pipeline
 11. WSL export/import appliance preservation
 12. restored appliance host validation
+13. NoOpTweak device install/file-placement/uninstall
+14. NoOpTweak device runtime/respring lifecycle
 
 Not validated:
 
-- device install/uninstall
-- device runtime behavior
+- LogosHookTest device runtime behavior
 - SpringBoard runtime hook behavior on the real iPhone
 - FakeGPS logic
 - CoreLocation/locationd spoofing
@@ -168,5 +169,8 @@ The WSL export tar is private. Do not publish it or commit it to Git.
 Before touching the iPhone, follow:
 
     docs/DEVICE_INSTALL_SAFETY_PLAN.md
+    docs/DEVICE_TRANSFER_WORKFLOW.md
+    docs/NOOP_RUNTIME_VALIDATION.md
+    docs/LOGOS_RUNTIME_VALIDATION_PLAN.md
 
 The next project branch should validate harmless install/uninstall, not GPS spoofing.

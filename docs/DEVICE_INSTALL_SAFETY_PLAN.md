@@ -12,6 +12,21 @@ Current scope:
 - host-side build/package pipeline validated
 - no FakeGPS logic yet
 
+
+## Current validated device milestone
+
+NoOpTweak has completed the first controlled runtime lifecycle on-device:
+
+    install
+    file placement
+    controlled SpringBoard respring
+    device returned normally
+    uninstall
+    post-uninstall respring
+    final clean package/file state
+
+This validates the no-op package lifecycle only. It does not validate Logos hook execution or FakeGPS behavior.
+
 ## Hard rule
 
 Do not install real FakeGPS logic until a harmless package install/uninstall has been tested.
