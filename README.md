@@ -136,3 +136,19 @@ Validated so far:
 - `libSystem.dylib` exporting `dyld_stub_binder`
 
 These are linker stubs only. They are not runtime implementations and are not yet enough for Foundation/CoreFoundation/Substrate-heavy tweaks.
+
+## CoreFoundation stub milestone
+
+A minimal CoreFoundation test package has been validated using a real Mach-O framework stub.
+
+Validated:
+- `CFStringCreateWithCString`
+- `kCFAllocatorDefault`
+- ARMv7 tweak compile/link/sign/package flow
+
+Framework-stub rule:
+When a generated stub framework is placed early in `-F` search paths, it must include:
+- the Mach-O binary, e.g. `CoreFoundation.framework/CoreFoundation`
+- a `Headers` symlink back to the real SDK headers
+
+Otherwise Clang may resolve the stub framework first and fail during header lookup.
