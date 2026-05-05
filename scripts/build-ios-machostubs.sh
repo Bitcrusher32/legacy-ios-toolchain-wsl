@@ -85,3 +85,42 @@ fi
 file "$CF_FRAMEWORK_DIR/CoreFoundation"
 arm-apple-darwin-nm -g "$CF_FRAMEWORK_DIR/CoreFoundation" | grep -E 'CFStringCreateWithCString|kCFAllocatorDefault' || true
 
+# Foundation framework stub.
+FOUNDATION_FRAMEWORK_DIR="$STUB_ROOT/System/Library/Frameworks/Foundation.framework"
+mkdir -p "$FOUNDATION_FRAMEWORK_DIR"
+
+cat > "$FOUNDATION_FRAMEWORK_DIR/Foundation_stub.s" <<'ASM'
+.data
+.align 2
+.globl ___CFConstantStringClassReference
+___CFConstantStringClassReference:
+    .long 0
+
+.text
+.align 2
+.globl _NSClassFromString
+_NSClassFromString:
+    mov r0, #0
+    bx lr
+ASM
+
+arm-apple-darwin-as -arch armv7 -o "$FOUNDATION_FRAMEWORK_DIR/Foundation_stub.o" "$FOUNDATION_FRAMEWORK_DIR/Foundation_stub.s"
+
+arm-apple-darwin-ld \
+  -arch armv7 \
+  -dylib \
+  -install_name /System/Library/Frameworks/Foundation.framework/Foundation \
+  -o "$FOUNDATION_FRAMEWORK_DIR/Foundation" \
+  "$FOUNDATION_FRAMEWORK_DIR/Foundation_stub.o"
+
+if [ -n "${THEOS:-}" ] && [ -d "$THEOS/sdks/iPhoneOS9.3.sdk/System/Library/Frameworks/Foundation.framework/Headers" ]; then
+  ln -sfn \
+    "$THEOS/sdks/iPhoneOS9.3.sdk/System/Library/Frameworks/Foundation.framework/Headers" \
+    "$FOUNDATION_FRAMEWORK_DIR/Headers"
+else
+  echo "Warning: THEOS not set or Foundation SDK headers not found; Headers symlink not created."
+fi
+
+file "$FOUNDATION_FRAMEWORK_DIR/Foundation"
+arm-apple-darwin-nm -g "$FOUNDATION_FRAMEWORK_DIR/Foundation" | grep -E 'NSClassFromString|CFConstantStringClassReference' || true
+

@@ -6,22 +6,27 @@ Author: Bitcrusher32
 
 ## Status
 
-Working baseline achieved.
+Current validated ladder:
 
-Validated:
-- Toolchain builds on WSL Ubuntu 24.04.3
-- sudo make install installs tools into /usr/bin
-- arm-apple-darwin-as emits Mach-O ARMv7 objects
-- arm-apple-darwin-ld emits Mach-O ARMv7 relocatable objects
-- arm-apple-darwin-ar creates valid archives
-- ldid installs into PATH
+1. Legacy ARMv7 iOS toolchain build/install/verify on WSL Ubuntu 24.04: validated
+2. Theos wrapper setup: validated
+3. No-op Theos tweak `.deb`: validated
+4. Objective-C runtime symbol package: validated
+5. CoreFoundation symbol package: validated
+6. Foundation symbol package: validated
 
 Not yet validated:
-- Full iOS executable linking
-- SDK/libSystem path setup
-- Theos tweak build
-- .deb packaging
-- Device install workflow
+
+- Logos hook package after latest wrappers/stubs
+- MobileSubstrate/CydiaSubstrate link stubs
+- harmless device install/uninstall
+- FakeGPS logic
+- system-wide GPS spoofing
+- preferences/UI
+
+Important caveat:
+
+Generated Mach-O SDK stubs are host-side linker aids only. They are not runtime implementations. The target iPhone provides the real frameworks at runtime.
 
 ## Validated environment
 
@@ -56,9 +61,10 @@ Current automation level:
 2. Clone/build/install helper:
        ./scripts/build-toolchain.sh
 
-Important: patch application is not automated yet.
+3. Linux/WSL source patching:
+       scripts/apply-linux-wsl-patches.py
 
-Before a fresh build succeeds, the source fixes described in PATCHES.md still need to be applied manually or converted into patch files under `patches/`.
+Patch application is automated by the Python patcher. The old hand-written patch sketches are not part of the live build path.
 
 ## Reproducible build validation
 
@@ -80,10 +86,11 @@ Validated smoke outputs:
 - libtest.a: current ar archive random library
 
 Known remaining scope:
-- full iOS executable linking is not validated
-- Theos tweak build is not validated
-- .deb packaging is not validated
+- full app/executable linking is not the current validation target
+- Logos hook package after latest wrappers/stubs is not validated
+- MobileSubstrate/CydiaSubstrate link stubs are not validated
 - device install/uninstall is not validated
+- FakeGPS logic is not validated
 
 ## Theos wrapper setup
 
