@@ -8,6 +8,12 @@ echo "Removing generated Theos/example artifacts..."
 find examples -type d \( -name .theos -o -name packages \) -prune -exec rm -rf {} +
 
 echo "Removing local validation logs..."
+rm -f ./*.log
+rm -f ./inspect-*.log
+rm -f ./validate-*.log
+rm -f ./validate-host-pipeline-*.log
+rm -f ./inspect-*test*.log
+
 rm -f validate-host-pipeline-*.log
 rm -f repro-build-*.log noop-build-*.log logos-build-*.log clean-*.log
 find examples -maxdepth 2 -type f -name '*.log' -delete
