@@ -64,3 +64,14 @@ Release assets should include:
 - `legacy-ios-toolchain-public-toolchain-V2.28.tar`
 - `legacy-ios-toolchain-public-toolchain-V2.28.sha256.txt`
 - `legacy-ios-toolchain-public-toolchain-V2.28.manifest.txt`
+
+## Public artifact boundary
+
+This appliance is intended to preserve the recovered toolchain state, not to redistribute Apple SDKs.
+
+The public package pipeline remains a hydration task:
+
+1. import the public appliance
+2. obtain Apple SDKs through legitimate channels
+3. configure Theos/SDK paths locally
+4. run the repo validation scripts appropriate to that local setup
