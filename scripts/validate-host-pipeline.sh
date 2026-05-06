@@ -48,8 +48,11 @@ echo "=== [6/7] CoreFoundation / Foundation tests ==="
 build_example "corefoundation-test"
 build_example "foundation-test"
 
-echo "=== [7/7] Logos hook test ==="
+echo "=== [7/8] Logos hook test ==="
 build_example "logos-hook-test"
+
+echo "=== [8/8] Logos logging test ==="
+build_example "logos-logging-test"
 
 echo
 echo "Host pipeline validation complete."

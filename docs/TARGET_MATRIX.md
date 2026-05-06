@@ -18,6 +18,7 @@ Do not mark a target supported without evidence.
 |---|---|---:|---|---|---|---|---|
 | A | iPhone 4s | 6.1.3 | armv7 | validated-host | validated-device-install for NoOpTweak | validated-device-runtime for NoOpTweak | Primary proven lane |
 | A2 | iPhone 4s | 6.1.3 | armv7 | validated-host | validated-device-install for LogosHookTest | validated-device-runtime for LogosHookTest | Logos runtime boundary crossed |
+| A3 | iPhone 4s | 6.1.3 | armv7 | validated-host | validated-device-install for LogosLoggingTest | validated-device-runtime for LogosLoggingTest | Hook-body observability marker validated |
 | B | iPhone 4 / iOS 5.x or 6.x class | 5.x/6.x | armv7 | unknown | unknown | unknown | Future lane |
 | C | iPhone 5 class | 6.x/7.x | armv7s | unknown | unknown | unknown | Future lane |
 | D | early arm64 devices | 7.x/8.x | arm64 | unknown | unknown | unknown | Future lane; likely separate constraints |
@@ -42,7 +43,6 @@ Lane A has now validated LogosHookTest runtime behavior.
 
 Lane A has not yet validated:
 
-- logging-only hook observability
 - behavior-changing hooks
 - preference bundles
 - application-specific tweak behavior

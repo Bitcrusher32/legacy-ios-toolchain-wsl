@@ -68,4 +68,4 @@ Minimum support evidence should include:
 
 The next boundary is not application logic.
 
-The Logos/MobileSubstrate runtime boundary has been crossed for LogosHookTest on the iPhone 4s / iOS 6.1.3 / ARMv7 lane. The next boundary is logging-only hook observability.
+The Logos/MobileSubstrate runtime boundary and logging-only hook observability boundary have been crossed on the iPhone 4s / iOS 6.1.3 / ARMv7 lane. The next boundary should be another narrow edge case, not behavior-changing application logic.

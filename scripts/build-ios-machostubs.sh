@@ -29,6 +29,18 @@ cat > "$LIB_DIR/libSystem_stub.s" <<'ASM'
 .globl dyld_stub_binder
 dyld_stub_binder:
     bx lr
+
+.globl _open
+_open:
+    bx lr
+
+.globl _write
+_write:
+    bx lr
+
+.globl _close
+_close:
+    bx lr
 ASM
 
 arm-apple-darwin-as -arch armv7 -o "$LIB_DIR/libSystem_stub.o" "$LIB_DIR/libSystem_stub.s"

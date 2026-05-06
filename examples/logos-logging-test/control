@@ -1,0 +1,9 @@
+Package: com.bitcrusher32.logosloggingtest
+Name: LogosLoggingTest
+Version: 0.0.1
+Architecture: iphoneos-arm
+Description: Minimal Logos hook runtime observability validation.
+Maintainer: Bitcrusher32
+Author: Bitcrusher32
+Section: Tweaks
+Depends: mobilesubstrate
