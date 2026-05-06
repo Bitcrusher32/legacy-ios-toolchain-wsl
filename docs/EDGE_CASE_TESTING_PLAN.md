@@ -109,9 +109,7 @@ Covers:
 - CydiaSubstrate framework stub
 - host package generation
 
-Still needs:
-
-- device runtime validation
+Device runtime validation has now passed for the minimal LogosHookTest lifecycle.
 
 ## Candidate future edge cases
 

@@ -42,6 +42,8 @@ Current scope: V1 legacy iOS ARMv7 toolchain + Theos host-side preservation/repr
 10. WSL import/restore validation
 11. NoOpTweak device install/file-placement/uninstall
 12. NoOpTweak runtime/respring/uninstall lifecycle
+13. LogosHookTest device install/file-placement/uninstall
+14. LogosHookTest controlled SpringBoard runtime lifecycle
 
 ## Not yet validated
 

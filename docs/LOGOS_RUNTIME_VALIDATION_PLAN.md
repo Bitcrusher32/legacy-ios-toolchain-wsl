@@ -8,6 +8,8 @@ Goal:
     survive a controlled SpringBoard respring,
     and uninstall cleanly.
 
+Status: completed for LogosHookTest on the iPhone 4s / iOS 6.1.3 / ARMv7 lane. See docs/LOGOS_RUNTIME_VALIDATION.md.
+
 This still does not include FakeGPS logic.
 
 ## Candidate package
@@ -98,6 +100,6 @@ Stop immediately if:
 
 ## After success
 
-If LogosHookTest succeeds, the next milestone can be a logging-only hook with a clear verification method.
+LogosHookTest succeeded. The next milestone can be a logging-only hook with a clear verification method.
 
 Still do not start GPS spoofing until a logging-only hook is validated.

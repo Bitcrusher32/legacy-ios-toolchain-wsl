@@ -35,7 +35,7 @@ The current proven lane is:
 2. Keep the WSL appliance private and restorable.
 3. Keep the repo-hosted host validation pipeline green.
 4. Validate device runtime behavior using harmless packages only.
-5. Validate Logos/MobileSubstrate runtime behavior next.
+5. Validate logging-only hook observability next.
 6. Build a target matrix before claiming broader compatibility.
 7. Add new examples only when they prove reusable toolchain/runtime edge cases.
 
@@ -68,4 +68,4 @@ Minimum support evidence should include:
 
 The next boundary is not application logic.
 
-The next boundary is controlled Logos/MobileSubstrate runtime validation on the already-proven iPhone 4s / iOS 6.1.3 / ARMv7 lane.
+The Logos/MobileSubstrate runtime boundary has been crossed for LogosHookTest on the iPhone 4s / iOS 6.1.3 / ARMv7 lane. The next boundary is logging-only hook observability.

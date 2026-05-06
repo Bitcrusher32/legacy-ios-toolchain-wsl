@@ -172,5 +172,6 @@ Before touching the iPhone, follow:
     docs/DEVICE_TRANSFER_WORKFLOW.md
     docs/NOOP_RUNTIME_VALIDATION.md
     docs/LOGOS_RUNTIME_VALIDATION_PLAN.md
+    docs/LOGOS_RUNTIME_VALIDATION.md
 
 The next project branch should validate harmless install/uninstall, not GPS spoofing.
