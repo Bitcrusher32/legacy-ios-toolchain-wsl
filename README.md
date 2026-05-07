@@ -1,5 +1,7 @@
 # Legacy iOS ARMv7 Toolchain Appliance for WSL Ubuntu 24.04
 
+A modern repavement of the legacy theros toolchain from a google code archive. Adapted to run in a WSL Ubuntu 24.04LTS environment.
+
 Patched build scripts, Theos integration helpers, Mach-O stub generation, validation examples, WSL appliance documentation, and public/private preservation workflows for rebuilding and validating a legacy iOS ARMv7 toolchain from WSL Ubuntu 24.04.
 
 This project began as a recovery effort for an iPhone 4s / iOS 6.1.3 tweak toolchain. The current scope is broader:
