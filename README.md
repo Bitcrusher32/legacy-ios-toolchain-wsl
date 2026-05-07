@@ -399,18 +399,15 @@ Historical references to older application-specific goals may exist in obsolete 
 
 ## Potential next work
 
-Main branch enhancements:
-
-1. public toolchain case testing
-2. intensive edge-case testing
-3. broad package support checks 
-
 Reasonable future branches:
 
-1. public hydration guide testing on a second machine
-2. target matrix research without support claims
-3. additional host-only SDK/framework edge-case tests
-4. separate repo/project for actual tweak experiments
-5. optional public download landing page with checksum/manifest links
+1. public appliance import testing on a second machine
+2. public hydration guide testing with a user-provided Theos/SDK setup
+3. target matrix research without support claims
+4. intensive host-side edge-case testing
+5. additional package-shape checks
+6. additional host-only SDK/framework symbol tests
+7. optional public download landing page with checksum/manifest links
+8. separate repo/project for actual tweak experiments
 
 The repo is currently at a clean stopping point after the V2.29 public release appliance milestone.
