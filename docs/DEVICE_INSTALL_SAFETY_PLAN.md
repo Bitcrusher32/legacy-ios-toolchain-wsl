@@ -10,7 +10,7 @@ Current scope:
 - OpenSSH available
 - MobileSubstrate installed
 - host-side build/package pipeline validated
-- no FakeGPS logic yet
+- no application-specific logic yet
 
 
 ## Current validated device milestone
@@ -25,18 +25,18 @@ NoOpTweak has completed the first controlled runtime lifecycle on-device:
     post-uninstall respring
     final clean package/file state
 
-This validates the no-op package lifecycle only. It does not validate Logos hook execution or FakeGPS behavior.
+This validates the no-op package lifecycle only. It does not validate Logos hook execution or application-specific behavior.
 
 ## Hard rule
 
-Do not install real FakeGPS logic until a harmless package install/uninstall has been tested.
+Do not install behavior-changing application-specific logic until a harmless package install/uninstall has been tested.
 
 The first device test must be either:
 
 1. a no-op package, or
 2. a logging-only package with a harmless SpringBoard hook
 
-No GPS hooks, CoreLocation hooks, locationd hooks, daemon changes, or preference bundles should be tested in the first install.
+No GPS hooks, broad system hooks, daemon/system hooks, daemon changes, or preference bundles should be tested in the first install.
 
 ## Current device preservation assumptions
 
@@ -58,7 +58,7 @@ Before installing any generated package:
 - Confirm Windows hotspot or current network lets host reach the iPhone over SSH.
 - Confirm SSH login works.
 - Confirm root password is known.
-- Strongly consider changing the root password away from `alpine` before repeated network testing.
+- Strongly consider changing the device root password away from the default before repeated network testing.
 - Confirm Cydia opens.
 - Confirm MobileSubstrate is installed.
 - Confirm Safe Mode package is installed.
@@ -215,7 +215,7 @@ A successful no-op install/uninstall proves:
 It does not prove:
 
 - Logos runtime hook safety
-- CoreLocation spoofing
+- broad system hook behavior
 - locationd behavior
 - system-wide spoofing
 - preference bundle behavior
@@ -232,4 +232,4 @@ Only after no-op install/uninstall succeeds:
 5. uninstall LogosHookTest
 6. then consider first logging-only real hook experiment
 
-FakeGPS logic should start only after these safety tests pass.
+application-specific logic should start only after these safety tests pass.

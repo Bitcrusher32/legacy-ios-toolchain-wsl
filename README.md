@@ -2,6 +2,18 @@
 
 Patched build scripts, Theos wrapper setup, Mach-O stub generation, validation examples, and WSL appliance documentation for building legacy iOS ARMv7 tweaks from WSL Ubuntu 24.04.
 
+## Public toolchain appliance
+
+A sanitized public toolchain-only WSL/rootfs-style appliance is available for the V2.28 public release.
+
+See:
+
+- `docs/PUBLIC_APPLIANCE.md`
+- `docs/PUBLIC_HYDRATION_GUIDE.md`
+
+The public appliance validates the recovered ARMv7 toolchain smoke tests. It does not include Apple SDKs and does not validate the full Theos/iPhoneOS package pipeline by itself.
+
+
 Author: Bitcrusher32
 
 ## Current status
@@ -29,7 +41,7 @@ Not validated:
 
 - LogosHookTest device runtime behavior
 - SpringBoard runtime hook behavior on the real iPhone
-- FakeGPS logic
+- application-specific logic
 - CoreLocation/locationd spoofing
 - preferences/UI
 
@@ -150,7 +162,7 @@ Before any device install, inspect a `.deb` on the host:
 
     ./scripts/inspect-deb-package.sh path/to/package.deb
 
-The first install candidate should be a harmless no-op package, not FakeGPS logic.
+The first install candidate should be a harmless no-op package, not application-specific logic.
 
 ## WSL appliance preservation
 
@@ -175,4 +187,4 @@ Before touching the iPhone, follow:
     docs/LOGOS_RUNTIME_VALIDATION.md
     docs/LOGOS_LOGGING_VALIDATION.md
 
-The next project branch should validate harmless install/uninstall, not GPS spoofing.
+The next project branch should validate harmless install/uninstall, not application-specific behavior.

@@ -51,7 +51,7 @@ Current scope: V1 legacy iOS ARMv7 toolchain + Theos host-side preservation/repr
 
 - LogosHookTest device runtime behavior
 - SpringBoard runtime hook behavior on the real iPhone
-- FakeGPS logic
+- application-specific logic
 - CoreLocation/locationd spoofing
 - System-wide spoofing
 - Preferences/UI

@@ -58,4 +58,4 @@ Not yet confirmed:
 - Logos hook package after latest wrappers/stubs
 - MobileSubstrate/CydiaSubstrate link stubs
 - device install/uninstall
-- FakeGPS logic
+- application-specific logic

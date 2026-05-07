@@ -255,7 +255,7 @@ Recorded values:
 
 This appliance proves host-side build/package reproducibility only.
 
-It does not prove package install safety, SpringBoard runtime behavior, MobileSubstrate runtime behavior, GPS spoof logic, or uninstall/recovery safety.
+It does not prove package install safety, SpringBoard runtime behavior, MobileSubstrate runtime behavior, application-specific runtime logic, or uninstall/recovery safety.
 
 No device install should be performed until docs/DEVICE_INSTALL_SAFETY_PLAN.md exists and has been reviewed.
 DOC

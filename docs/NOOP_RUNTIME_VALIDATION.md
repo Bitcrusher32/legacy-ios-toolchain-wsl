@@ -17,7 +17,7 @@ Device:
 
 This was still a harmless no-op test.
 
-No FakeGPS logic, CoreLocation hook, locationd hook, preference bundle, or Logos hook behavior was tested here.
+No application-specific logic, broad system hook, daemon/system hook, preference bundle, or Logos hook behavior was tested here.
 
 ## Validated lifecycle
 
@@ -92,7 +92,7 @@ This does not prove:
 - CydiaSubstrate hook resolution for generated packages
 - hooked SpringBoard method safety
 - logging behavior
-- GPS spoofing
+- application-specific behavior
 - CoreLocation/locationd behavior
 - preference bundle safety
 - long-term stability
@@ -103,4 +103,4 @@ Next boundary:
 
     LogosHookTest runtime validation
 
-Do not proceed to FakeGPS logic until LogosHookTest survives install, respring, uninstall, and post-uninstall respring.
+Do not proceed to application-specific logic until LogosHookTest survives install, respring, uninstall, and post-uninstall respring.

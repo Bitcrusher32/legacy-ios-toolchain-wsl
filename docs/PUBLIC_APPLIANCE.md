@@ -75,3 +75,23 @@ The public package pipeline remains a hydration task:
 2. obtain Apple SDKs through legitimate channels
 3. configure Theos/SDK paths locally
 4. run the repo validation scripts appropriate to that local setup
+
+
+## Public release
+
+Release tag:
+
+    v2.28-public-toolchain
+
+Static appliance URL:
+
+    https://git.bitcrusher32.win/downloads/legacy-ios-toolchain/V2.28/legacy-ios-toolchain-public-toolchain-V2.28.tar
+
+Sidecar files:
+
+    legacy-ios-toolchain-public-toolchain-V2.28.sha256.txt
+    legacy-ios-toolchain-public-toolchain-V2.28.manifest.txt
+
+The `.tar` is static-hosted because the Gitea release attachment path rejected the 1.58 GB upload with `413 Payload Too Large`.
+
+The `.tar` must not be committed to Git.

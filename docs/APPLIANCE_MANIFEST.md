@@ -28,7 +28,7 @@ Recorded values:
     PRETTY_NAME=Ubuntu 24.04.3 LTS
     VERSION_ID=24.04
     VERSION_CODENAME=noble
-    kernel=Linux PIXELASPIRE96 6.6.87.2-microsoft-standard-WSL2 #1 SMP PREEMPT_DYNAMIC Thu Jun  5 18:30:46 UTC 2025 x86_64 x86_64 x86_64 GNU/Linux
+    kernel=Linux <HOSTNAME> 6.6.87.2-microsoft-standard-WSL2 #1 SMP PREEMPT_DYNAMIC Thu Jun  5 18:30:46 UTC 2025 x86_64 x86_64 x86_64 GNU/Linux
     user=bitcrusher32
     home=/home/bitcrusher32
 
@@ -252,7 +252,7 @@ Recorded values:
 
 This appliance proves host-side build/package reproducibility only.
 
-It does not prove package install safety, SpringBoard runtime behavior, MobileSubstrate runtime behavior, GPS spoof logic, or uninstall/recovery safety.
+It does not prove package install safety, SpringBoard runtime behavior, MobileSubstrate runtime behavior, application-specific runtime logic, or uninstall/recovery safety.
 
 No device install should be performed until docs/DEVICE_INSTALL_SAFETY_PLAN.md exists and has been reviewed.
 

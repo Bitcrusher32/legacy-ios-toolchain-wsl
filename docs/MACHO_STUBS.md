@@ -105,4 +105,4 @@ The next unresolved areas are:
 
 - harmless device install/uninstall workflow
 - runtime behavior on the actual iPhone
-- FakeGPS logic
+- application-specific logic

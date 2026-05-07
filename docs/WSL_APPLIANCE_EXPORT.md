@@ -107,4 +107,4 @@ The appliance should validate:
 
 ## Known non-goals
 
-This appliance does not yet validate device install, device uninstall, SpringBoard runtime behavior, GPS spoofing, preferences UI, or recovery from a bad tweak.
+This appliance does not yet validate device install, device uninstall, SpringBoard runtime behavior, application-specific behavior, preferences UI, or recovery from a bad tweak.

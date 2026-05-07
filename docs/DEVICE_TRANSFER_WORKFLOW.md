@@ -27,7 +27,7 @@ Until WSL routing/NAT behavior is debugged separately, use Windows-side PuTTY to
 
 ## Known iPhone IP during V1.24/V1.25 tests
 
-    192.168.137.57
+    <IPHONE_IP>
 
 Do not hardcode this permanently. Confirm the current iPhone IP before each session.
 
@@ -48,24 +48,24 @@ Copy to Windows bridge folder:
 
 Run from Windows PowerShell, not WSL and not the iPhone shell:
 
-    pscp.exe C:\iPhone4sPush\com.bitcrusher32.nooptweak_0.0.1-1+debug_iphoneos-arm.deb root@192.168.137.57:/var/root/
+    pscp.exe C:\iPhone4sPush\com.bitcrusher32.nooptweak_0.0.1-1+debug_iphoneos-arm.deb root@<IPHONE_IP>:/var/root/
 
 If PuTTY is not in PATH:
 
-    & "C:\Program Files\PuTTY\pscp.exe" C:\iPhone4sPush\com.bitcrusher32.nooptweak_0.0.1-1+debug_iphoneos-arm.deb root@192.168.137.57:/var/root/
+    & "C:\Program Files\PuTTY\pscp.exe" C:\iPhone4sPush\com.bitcrusher32.nooptweak_0.0.1-1+debug_iphoneos-arm.deb root@<IPHONE_IP>:/var/root/
 
 ## Control from PuTTY
 
 Use PuTTY to open an interactive root shell:
 
-    root@192.168.137.57
+    root@<IPHONE_IP>
 
 Then run dpkg commands on-device.
 
 ## Common mistakes to avoid
 
 - Do not run `plink.exe` or `pscp.exe` inside the iPhone shell.
-- Do not use placeholder IPs like `192.168.137.X` literally.
+- Do not use placeholder IPs like `<IPHONE_IP>` literally.
 - Do not assume WSL SSH/SCP works just because PuTTY works.
 - Do not install packages before inspecting them on the host.
 - Do not leave test packages installed unless deliberately proceeding to a runtime test.
@@ -76,4 +76,4 @@ If the iPhone shows a `169.254.x.x` address, DHCP failed. Stop package testing a
 
 A normal Windows hotspot IP should look like:
 
-    192.168.137.x
+    <IPHONE_IP>
