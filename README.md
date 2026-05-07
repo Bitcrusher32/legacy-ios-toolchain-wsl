@@ -13,7 +13,8 @@ This project began as a recovery effort for an iPhone 4s / iOS 6.1.3 tweak toolc
 - document edge cases and future target lanes without overclaiming compatibility
 
 Author: Udaiveer Singh Bhangu (Bitcrusher32)
-
+Attached is this project's LogDocV2.29, a novel human-in-loop iteration system: LogDocV2.29-sanitized.md
+See the LogDoc Loop System repo for more information: https://git.bitcrusher32.win/bitcrusher32/logdoc-loop-system 
 ---
 
 ## Current status
