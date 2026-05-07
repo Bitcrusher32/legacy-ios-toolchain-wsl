@@ -411,3 +411,5 @@ Reasonable future branches:
 8. separate repo/project for actual tweak experiments
 
 The repo is currently at a clean stopping point after the V2.29 public release appliance milestone.
+
+License: MIT. See the repo's LICENSE file for more information.
