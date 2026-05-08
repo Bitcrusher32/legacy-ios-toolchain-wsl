@@ -18,7 +18,9 @@ See the LogDoc Loop System repo for more information: https://git.bitcrusher32.w
 ![License](https://img.shields.io/badge/license-see%20repo-lightgrey)
 
 Result: Reproducible WSL Ubuntu 24.04 environment for legacy iOS ARMv7/Theos builds.
+
 Validated: toolchain build, Mach-O smoke tests, Theos package generation, controlled iPhone 4s/iOS 6.1.3 install tests.
+
 Artifacts: scripts, docs, public sanitized appliance, checksum/manifest sidecars.
 
 ---
